@@ -11,6 +11,7 @@ buildNumber.properties
 
 .project
 .classpath
+classpath.out
 
 .vscode/*
 !.vscode/settings.json

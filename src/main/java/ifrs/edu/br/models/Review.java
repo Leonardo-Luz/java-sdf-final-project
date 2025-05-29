@@ -1,19 +1,28 @@
 package ifrs.edu.br.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 /**
  * Review
  */
+@Entity(name = "reviews")
 public class Review {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int id;
+        @Column(length = 100, nullable = false)
+        private String title;
         @Column(length = 600, nullable = false)
         private String text;
         @Column(name = "read_start_date", nullable = false)
@@ -21,16 +30,39 @@ public class Review {
         @Column(name = "read_end_date", nullable = true)
         private LocalDate readEndDate;
 
+        @ManyToOne
+        @JoinColumn(name = "book_id")
         private Book book;
+
+        @ManyToOne
+        @JoinColumn(name = "user_id")
         private User user;
 
-        public Review(int id, String text, LocalDate readStartDate, LocalDate readEndDate, Book book, User user) {
+        @ManyToMany
+        @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "review_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+        private List<User> likes;
+
+        public Review(int id, String title, String text, LocalDate readStartDate, LocalDate readEndDate, Book book,
+                        User user) {
                 this.id = id;
+                this.title = title;
                 this.text = text;
                 this.readStartDate = readStartDate;
                 this.readEndDate = readEndDate;
                 this.book = book;
                 this.user = user;
+        }
+
+        public Review(String title, String text, LocalDate readStartDate, LocalDate readEndDate, Book book, User user) {
+                this.title = title;
+                this.text = text;
+                this.readStartDate = readStartDate;
+                this.readEndDate = readEndDate;
+                this.book = book;
+                this.user = user;
+        }
+
+        public Review() {
         }
 
         public int getId() {
@@ -79,6 +111,14 @@ public class Review {
 
         public void setUser(User user) {
                 this.user = user;
+        }
+
+        public String getTitle() {
+                return title;
+        }
+
+        public void setTitle(String title) {
+                this.title = title;
         }
 
         @Override

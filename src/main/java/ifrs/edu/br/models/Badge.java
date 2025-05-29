@@ -1,15 +1,20 @@
 package ifrs.edu.br.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  * Badge
  */
-@Entity
+@Entity(name = "badges")
 public class Badge {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +26,17 @@ public class Badge {
         @Column(length = 300, nullable = false)
         private String requirements;
 
+        @ManyToMany
+        @JoinTable(name = "badge_user", joinColumns = @JoinColumn(name = "badge_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+        private List<User> users;
+
         public Badge(int id, String name, String requirements) {
                 this.id = id;
                 this.name = name;
                 this.requirements = requirements;
+        }
+
+        public Badge() {
         }
 
         public int getId() {
