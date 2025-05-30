@@ -1,10 +1,21 @@
 package ifrs.edu.br.cli;
 
+import java.util.List;
+
+import javax.persistence.EntityManager;
+
+import ifrs.edu.br.dao.BadgeDAO;
+import ifrs.edu.br.models.Badge;
+
 /**
  * Achievements
  */
 public class Achievements {
-    public static void command(String[] args) {
+    private static EntityManager entityManager;
+
+    public static void command(String args[], EntityManager entityManager) {
+        Achievements.entityManager = entityManager;
+
         if (args.length == 2) {
             String secondArg = args[1];
             if (secondArg.equals("list")) {
@@ -35,8 +46,32 @@ public class Achievements {
     }
 
     public static void achievementList() {
+        BadgeDAO badgeDAO = new BadgeDAO(entityManager);
+
+        List<Badge> badges = badgeDAO.list(10, 0); // TODO: Add pagination
+
+        if (badges.size() == 0) {
+            System.out.println("There're no registered achievements");
+            return;
+        }
+
+        System.out.println();
+        badges.forEach((badge) -> {
+            System.out.println(badge);
+            System.out.println();
+        });
     }
 
     public static void unlockAchievement(int id) {
+        BadgeDAO badgeDAO = new BadgeDAO(entityManager);
+
+        Badge badge = badgeDAO.find(id);
+
+        if (badge == null) {
+            System.out.println("Achievement not found!");
+            return;
+        }
+
+        System.out.println(badge);
     }
 }

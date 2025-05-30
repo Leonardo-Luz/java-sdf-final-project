@@ -11,6 +11,7 @@ public class Help {
         System.out.println("  -s, --signup                               Sign up a new user");
         System.out.println("  -l, --login                                Log in an existing user");
         System.out.println("    , --logout                               Logout from the current account");
+        System.out.println("  -p, --profile [<User ID>]                  Show user profile");
         System.out.println("      --add [review|book] [id|name] <value>  Add a review or a book");
         System.out.println("  -b, --books [--page=<number>]              List all books");
         System.out.println(

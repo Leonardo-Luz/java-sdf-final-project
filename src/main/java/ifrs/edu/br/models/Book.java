@@ -51,11 +51,11 @@ public class Book {
                 this.id = id;
         }
 
-        public String gettitle() {
+        public String getTitle() {
                 return title;
         }
 
-        public void settitle(String title) {
+        public void setTitle(String title) {
                 this.title = title;
         }
 
@@ -77,7 +77,8 @@ public class Book {
 
         @Override
         public String toString() {
-                String croppedSynopsis = this.synopsis.length() > 40 ? ( this.synopsis.substring(0, 40) + "..." ) : this.synopsis;
+                String croppedSynopsis = this.synopsis.length() > 40 ? (this.synopsis.substring(0, 40) + "...")
+                                : this.synopsis;
 
                 return "Book: \n" +
                                 "\tid: " + this.id + "\n" +

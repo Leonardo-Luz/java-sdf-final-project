@@ -9,9 +9,11 @@ import javax.persistence.EntityManager;
 
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
+import ifrs.edu.br.models.Badge;
 import ifrs.edu.br.models.Book;
 import ifrs.edu.br.dao.ReviewDAO;
 import ifrs.edu.br.context.Auth;
+import ifrs.edu.br.dao.BadgeDAO;
 import ifrs.edu.br.dao.BookDAO;
 
 /**
@@ -76,7 +78,16 @@ public class Add {
             }
 
             System.out.println("Adding a book");
-            addBook(scanner);
+            addBook();
+        } else if (type.equals("achievement")) {
+            if (args.length != 2) {
+                System.out.println("Error: Adding a achievement does not accept 'id' or 'name'.");
+                System.out.println("Usage: --add achievement");
+                return;
+            }
+
+            System.out.println("Adding a achievement");
+            addAchievement();
         } else {
             System.out.println("Error: Invalid type. Use 'review' or 'book'.");
         }
@@ -153,11 +164,10 @@ public class Add {
         reviewDAO.insert(review);
 
         System.out.println();
-        System.out.println("New Review created! Probably...");
-        System.out.println();
+        System.out.println("New Review created!");
     }
 
-    private static void addBook(Scanner scanner) {
+    private static void addBook() {
         User user = Auth.verify(entityManager);
         if (user == null) {
             System.out.println("You need to be logged to add a book");
@@ -188,7 +198,35 @@ public class Add {
         bookDAO.insert(book);
 
         System.out.println();
-        System.out.println("New Book created! Probably...");
+        System.out.println("New Book created!");
+    }
+
+    private static void addAchievement() {
+        User user = Auth.verify(entityManager);
+        if (user == null) {
+            System.out.println("You need to login before adding a review");
+            return;
+        }
+
+        if (!user.getRole().equals("ADMIN")) {
+            System.out.println("You need to be an ADMIN to add a book");
+            return;
+        }
+
+        System.out.println("> name");
+        System.out.print("> ");
+        String name = scanner.nextLine();
+
+        System.out.println("> requirements");
+        System.out.print("> ");
+        String requirements = scanner.nextLine();
+
+        Badge badge = new Badge(name, requirements);
+        BadgeDAO badgeDAO = new BadgeDAO(entityManager);
+
+        badgeDAO.insert(badge);
+
         System.out.println();
+        System.out.println("New Achievement created!");
     }
 }

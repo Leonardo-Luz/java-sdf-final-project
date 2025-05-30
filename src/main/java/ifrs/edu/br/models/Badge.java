@@ -36,6 +36,11 @@ public class Badge {
                 this.requirements = requirements;
         }
 
+        public Badge(String name, String requirements) {
+                this.name = name;
+                this.requirements = requirements;
+        }
+
         public Badge() {
         }
 

@@ -121,14 +121,25 @@ public class Review {
                 this.title = title;
         }
 
+        public boolean Like(User user) {
+                if (likes.contains(user)) {
+                        return false;
+                }
+
+                likes.add(user);
+                return true;
+        }
+
         @Override
         public String toString() {
+                long time = this.readEndDate.toEpochDay() - this.readStartDate.toEpochDay();
+
                 return "Review: \n" +
                                 "id: " + this.id + "\n" +
+                                "user: " + this.user.getName() + "\n" +
+                                "book: " + this.book.getTitle() + "\n" +
                                 "text: " + this.text + "\n" +
-                                "readStartDate: " + this.readStartDate + "\n" +
-                                "readEndDate: " + this.readEndDate + "\n" +
-                                "book: " + this.book + "\n" +
-                                "user: " + this.user;
+                                "likes: " + this.likes.size() + "\n" +
+                                "Read Time: " + time + " day(s)";
         }
 }

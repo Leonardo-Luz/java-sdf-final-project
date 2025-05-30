@@ -86,11 +86,13 @@ public class App {
 
             case "-r":
             case "--reviews":
-                Reviews.command(args);
+                connectDB();
+                Reviews.command(args, entityManager);
                 break;
 
             case "--like":
-                Like.command(args);
+                connectDB();
+                Like.command(args, entityManager);
                 break;
 
             case "-p":
@@ -101,7 +103,8 @@ public class App {
 
             case "-a":
             case "--achievements":
-                Achievements.command(args);
+                connectDB();
+                Achievements.command(args, entityManager);
                 break;
 
             case "-h":

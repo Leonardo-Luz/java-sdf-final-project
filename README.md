@@ -1,31 +1,23 @@
-## Java Software Development Frameworks
+## Java Software Development Frameworks Final Project
 
 * Alunos: Leonardo Luz & Diego Prestes
 * 5º Semestre ADS
 
-- review de livros
-    - Livros
-        - id
-        - nome
-        - paginas
-        - sinopse
-    - Resenhas
-        - texto
-        - inicio data leitura
-        - fim data leitura
-        - id livro
-        - id usuario
-    - Curtidas
-        - usuario id
-        - resenha id
-    - Usuarios
-        - id
-        - nome
-        - password
-    - Badges
-        - id
-        - nome
-        - requisito
-    - Usuario_Badge
-        - usuario id
-        - badge id
+## Usage: review \[options\]
+
+```sh
+
+    Options:
+      -v, --version                              Show version information
+      -s, --signup                               Sign up a new user
+      -l, --login                                Log in an existing user
+        , --logout                               Logout from the current account
+      -p, --profile [<User ID>]                  Show user profile
+          --add [review|book] [id|name] <value>  Add a review or a book
+      -b, --books [--page=<number>]              List all books
+          --like <Review ID>                     Like a review
+      -a, --achievements [<User ID>] [list|unlock] [<Achievement ID>]  Manage achievements
+      -r, --reviews [book | user] <Book ID|User ID> [--order=asc|desc] [--order-by=likes|release] [--page=<number>]  Show reviews
+      -h, --help                                 Show this help message
+
+```
