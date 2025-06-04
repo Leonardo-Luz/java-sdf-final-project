@@ -47,7 +47,7 @@ public class Like {
             return;
         }
 
-        if (review.Like(user)) {
+        if (review.addLike(user)) {
             reviewDAO.update(review);
             System.out.println("Review liked!");
         } else {

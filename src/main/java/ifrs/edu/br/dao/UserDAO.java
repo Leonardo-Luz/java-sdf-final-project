@@ -14,6 +14,20 @@ public class UserDAO extends DAO<User> {
         super(User.class, entityManager);
     }
 
+    public User login(String email, String password) {
+        try {
+            TypedQuery<User> query = entityManager.createQuery(
+                    "SELECT u FROM users u WHERE u.email = :email AND u.password = :password", User.class);
+
+            query.setParameter("email", email);
+            query.setParameter("password", password);
+
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public User findByEmail(String email) {
         try {
             TypedQuery<User> query = entityManager.createQuery("SELECT u FROM users u WHERE u.email = :email",

@@ -1,13 +1,7 @@
 package ifrs.edu.br;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import ifrs.edu.br.cli.Profile;
+import ifrs.edu.br.cli.Remove;
 import ifrs.edu.br.cli.Achievements;
 import ifrs.edu.br.cli.Add;
 import ifrs.edu.br.cli.Books;
@@ -20,15 +14,10 @@ import ifrs.edu.br.cli.Version;
 
 import ifrs.edu.br.context.Auth;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 /**
  * Hello world!
  */
 public class App {
-    public static EntityManager entityManager = null;
-    public static EntityManagerFactory entityManagerFactory = null;
-
     public static void main(String[] args) {
         if (args.length == 0) {
             Version.command();
@@ -37,20 +26,9 @@ public class App {
             return;
         }
 
-        if (args[0].equals("--help")) {
-            Help.command();
-            return;
-        }
-
         options(args);
 
-        if (entityManager != null)
-            entityManager.close();
-
-        if (entityManagerFactory != null)
-            entityManagerFactory.close();
-
-        return;
+        Database.close();
     }
 
     public static void options(String args[]) {
@@ -59,14 +37,14 @@ public class App {
         switch (command) {
             case "-s":
             case "--signup":
-                connectDB();
-                Signup.command(entityManager);
+                Database.connect();
+                Signup.command(Database.getEntityManager());
                 break;
 
             case "-l":
             case "--login":
-                connectDB();
-                Login.command(entityManager);
+                Database.connect();
+                Login.command(Database.getEntityManager());
                 break;
 
             case "--logout":
@@ -74,37 +52,42 @@ public class App {
                 break;
 
             case "--add":
-                connectDB();
-                Add.command(args, entityManager);
+                Database.connect();
+                Add.command(args, Database.getEntityManager());
+                break;
+
+            case "--remove":
+                Database.connect();
+                Remove.command(args, Database.getEntityManager());
                 break;
 
             case "-b":
             case "--books":
-                connectDB();
-                Books.command(args, entityManager);
+                Database.connect();
+                Books.command(args, Database.getEntityManager());
                 break;
 
             case "-r":
             case "--reviews":
-                connectDB();
-                Reviews.command(args, entityManager);
+                Database.connect();
+                Reviews.command(args, Database.getEntityManager());
                 break;
 
             case "--like":
-                connectDB();
-                Like.command(args, entityManager);
+                Database.connect();
+                Like.command(args, Database.getEntityManager());
                 break;
 
             case "-p":
             case "--profile":
-                connectDB();
-                Profile.command(args, entityManager);
+                Database.connect();
+                Profile.command(args, Database.getEntityManager());
                 break;
 
             case "-a":
             case "--achievements":
-                connectDB();
-                Achievements.command(args, entityManager);
+                Database.connect();
+                Achievements.command(args, Database.getEntityManager());
                 break;
 
             case "-h":
@@ -120,17 +103,5 @@ public class App {
             default:
                 System.out.println("Unknown command: " + command);
         }
-    }
-
-    public static void connectDB() {
-        Dotenv dotenv = Dotenv.load();
-
-        Map<String, Object> config = new HashMap<>();
-        config.put("javax.persistence.jdbc.url", dotenv.get("POSTGRES_DATABASE_JDBC"));
-        config.put("javax.persistence.jdbc.user", dotenv.get("POSTGRES_DATABASE_USER"));
-        config.put("javax.persistence.jdbc.password", dotenv.get("POSTGRES_DATABASE_PASSWORD"));
-
-        entityManagerFactory = Persistence.createEntityManagerFactory("PostgresSQLDefaultPU", config);
-        entityManager = entityManagerFactory.createEntityManager();
     }
 }

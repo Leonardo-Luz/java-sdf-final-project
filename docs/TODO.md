@@ -1,4 +1,4 @@
 ## TODO
 
-- [ ] Save user password hashed
-- [ ] Save login auth as a file in the system
+- [x] Save user password hashed
+- [x] Save login auth as a file in the system

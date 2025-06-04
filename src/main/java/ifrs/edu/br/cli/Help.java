@@ -13,6 +13,7 @@ public class Help {
         System.out.println("    , --logout                               Logout from the current account");
         System.out.println("  -p, --profile [<User ID>]                  Show user profile");
         System.out.println("      --add [review|book] [id|name] <value>  Add a review or a book");
+        System.out.println("  -r, --remove [review|book] [id|name] <value>  remove a review or a book");
         System.out.println("  -b, --books [--page=<number>]              List all books");
         System.out.println(
                 "  -r, --reviews [book | user] <Book ID|User ID> [--order=asc|desc] [--order-by=likes|release] [--page=<number>]  Show reviews");

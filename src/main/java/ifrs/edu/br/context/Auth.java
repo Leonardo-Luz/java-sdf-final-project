@@ -35,6 +35,8 @@ public class Auth {
 
         try (FileWriter writer = new FileWriter(AUTH_PATH)) {
             writer.write(email);
+            writer.write("\n");
+            writer.write(password);
             System.out.println("Login successful.");
         } catch (IOException e) {
             e.printStackTrace();
@@ -46,6 +48,7 @@ public class Auth {
             System.out.println("Already logged in.");
             return;
         }
+        String rawPassword = user.getPassword();
 
         UserDAO userDAO = new UserDAO(entityManager);
         String hashedPassword = passwordEncoder.encode(user.getPassword());
@@ -54,6 +57,8 @@ public class Auth {
 
         try (FileWriter writer = new FileWriter(AUTH_PATH)) {
             writer.write(user.getEmail());
+            writer.write("\n");
+            writer.write(rawPassword);
             System.out.println("Signup successful.");
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,14 +88,32 @@ public class Auth {
             Scanner scanner = new Scanner(file);
             if (!scanner.hasNextLine()) {
                 scanner.close();
+                System.out.println("Verification failed, loggin out...");
                 return null;
             }
 
             String email = scanner.nextLine().trim();
+
+            if (!scanner.hasNextLine()) {
+                scanner.close();
+                System.out.println("Verification failed, loggin out...");
+                logout();
+                return null;
+            }
+
+            String password = scanner.nextLine().trim();
             scanner.close();
 
             UserDAO userDAO = new UserDAO(entityManager);
-            return userDAO.findByEmail(email);
+            User user = userDAO.findByEmail(email);
+
+            if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
+                System.out.println("Verification failed, loggin out...");
+                logout();
+                return null;
+            }
+
+            return user;
         } catch (IOException e) {
             e.printStackTrace();
             return null;

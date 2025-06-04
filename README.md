@@ -3,6 +3,19 @@
 * Alunos: Leonardo Luz & Diego Prestes
 * 5º Semestre ADS
 
+## Dependencies
+
+* maven
+* java jdk 24
+
+## Install:
+
+```sh
+
+    ./install.sh
+
+```
+
 ## Usage: review \[options\]
 
 ```sh

@@ -3,6 +3,7 @@ package ifrs.edu.br.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,11 +31,11 @@ public class Review {
         @Column(name = "read_end_date", nullable = true)
         private LocalDate readEndDate;
 
-        @ManyToOne
+        @ManyToOne(cascade = CascadeType.REMOVE)
         @JoinColumn(name = "book_id")
         private Book book;
 
-        @ManyToOne
+        @ManyToOne(cascade = CascadeType.REMOVE)
         @JoinColumn(name = "user_id")
         private User user;
 
@@ -121,7 +122,7 @@ public class Review {
                 this.title = title;
         }
 
-        public boolean Like(User user) {
+        public boolean addLike(User user) {
                 if (likes.contains(user)) {
                         return false;
                 }
