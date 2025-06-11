@@ -136,7 +136,7 @@ public class User {
                                 "\tid: " + this.id + "\n" +
                                 "\temail: " + this.email + "\n" +
                                 "\tname: " + this.name + "\n" +
-                                "\tpassword: " + this.password + "\n" +
+                                "\tpassword: " + ("*").repeat(this.password.length()/3) + "\n" +
                                 "\trole: " + this.role + "\n" +
                                 "\tbirthday: " + this.birthday + "\n";
         }

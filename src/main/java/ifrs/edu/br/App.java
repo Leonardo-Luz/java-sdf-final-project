@@ -10,6 +10,7 @@ import ifrs.edu.br.cli.Like;
 import ifrs.edu.br.cli.Login;
 import ifrs.edu.br.cli.Reviews;
 import ifrs.edu.br.cli.Signup;
+import ifrs.edu.br.cli.Update;
 import ifrs.edu.br.cli.Version;
 
 import ifrs.edu.br.context.Auth;
@@ -59,6 +60,12 @@ public class App {
             case "--remove":
                 Database.connect();
                 Remove.command(args, Database.getEntityManager());
+                break;
+
+            case "-u":
+            case "--update":
+                Database.connect();
+                Update.command(args, Database.getEntityManager());
                 break;
 
             case "-b":

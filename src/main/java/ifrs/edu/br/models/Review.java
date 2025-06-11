@@ -139,6 +139,7 @@ public class Review {
                                 "id: " + this.id + "\n" +
                                 "user: " + this.user.getName() + "\n" +
                                 "book: " + this.book.getTitle() + "\n" +
+                                "title: " + this.title + "\n" +
                                 "text: " + this.text + "\n" +
                                 "likes: " + this.likes.size() + "\n" +
                                 "Read Time: " + time + " day(s)";

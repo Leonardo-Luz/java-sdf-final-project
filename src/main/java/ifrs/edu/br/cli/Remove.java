@@ -1,8 +1,5 @@
 package ifrs.edu.br.cli;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 import javax.persistence.EntityManager;
@@ -30,8 +27,9 @@ public class Remove {
         if (args.length < 2) {
             System.out.println("Error: Incomplete arguments for --remove.");
             System.out.println("Usage:");
-            System.out.println("  --remove review [id|name] <value>");
-            System.out.println("  --remove book");
+            System.out.println("  --remove review      [id|name] <value>");
+            System.out.println("  --remove book        [id|name] <value>");
+            System.out.println("  --remove achievement [id|name] <value>");
             return;
         }
 
@@ -155,6 +153,11 @@ public class Remove {
 
         if (review == null) {
             System.out.println("Review not found!");
+            return;
+        }
+
+        if (user.getRole() != "ADMIN" && review.getUser().getId() != user.getId()) {
+            System.out.println("Only ADMINS can delete non-owned reviews.");
             return;
         }
 
