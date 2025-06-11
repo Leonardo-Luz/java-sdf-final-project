@@ -1,5 +1,6 @@
 package ifrs.edu.br.cli;
 
+import java.util.OptionalInt;
 import java.util.Scanner;
 
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import ifrs.edu.br.models.User;
 import ifrs.edu.br.models.Badge;
 import ifrs.edu.br.models.Book;
 import ifrs.edu.br.dao.ReviewDAO;
+import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.context.Auth;
 import ifrs.edu.br.dao.BadgeDAO;
 import ifrs.edu.br.dao.BookDAO;
@@ -30,6 +32,7 @@ public class Remove {
             System.out.println("  --remove review      [id|name] <value>");
             System.out.println("  --remove book        [id|name] <value>");
             System.out.println("  --remove achievement [id|name] <value>");
+            System.out.println("  --remove account     [id|name|self] <value>");
             return;
         }
 
@@ -134,6 +137,36 @@ public class Remove {
 
             System.out.println("Removing a achievement using " + mode + ": " + value);
             removeAchievement(achievementId);
+        } else if (type.equals("account")) {
+            if (args.length < 3) {
+                System.out.println("Error: Missing arguments for removing a account.");
+                System.out.println("Usage: --remove account [id|name|self] <value>");
+                return;
+            }
+
+            String mode = args[2];
+            String value = args[3];
+
+            if (!mode.equals("id") && !mode.equals("name") && !mode.equals("self")) {
+                System.out.println("Error: Invalid mode for account. Use 'id', 'name' or 'self'.");
+                return;
+            }
+
+            if (mode.equals("name")) {
+                System.out.println("Error: 'name' query not implemented!");
+                return;
+            }
+            Integer accountId = null;
+
+            if(mode.equals("id"))
+            try {
+                accountId = Integer.parseInt(value);
+            } catch (NumberFormatException exception) {
+                System.out.println("Error: invalid ID");
+            }
+
+            System.out.println("Removing a account using " + mode + ": " + value);
+            removeAccount(accountId);
         } else {
             System.out.println("Error: Invalid type. Use 'review' or 'book'.");
         }
@@ -196,12 +229,12 @@ public class Remove {
     private static void removeAchievement(int achievementId) {
         User user = Auth.verify(entityManager);
         if (user == null) {
-            System.out.println("You need to login before removing a review");
+            System.out.println("You need to login before removing a achievement");
             return;
         }
 
         if (!user.getRole().equals("ADMIN")) {
-            System.out.println("You need to be an ADMIN to remove a book");
+            System.out.println("You need to be an ADMIN to remove a achievement");
             return;
         }
 
@@ -209,7 +242,7 @@ public class Remove {
         Badge badge = badgeDAO.find(achievementId);
 
         if (badge == null) {
-            System.out.println("Badge not found!");
+            System.out.println("Achievement not found!");
             return;
         }
 
@@ -217,5 +250,33 @@ public class Remove {
 
         System.out.println();
         System.out.println("Achievement removed!");
+    }
+
+    private static void removeAccount(Integer userId) {
+        User user = Auth.verify(entityManager);
+        if (user == null) {
+            System.out.println("You need to login before removing a user");
+            return;
+        }
+
+        UserDAO userDAO = new UserDAO(entityManager);
+
+        if (userId != null && !user.getRole().equals("ADMIN")) {
+            System.out.println("You need to be an ADMIN to remove a user by ID");
+            return;
+        } else if(userId != null && user.getRole().equals("ADMIN")) {
+             user = userDAO.find(userId);
+        } else if (userId == null)
+            Auth.logout();
+
+        if (user == null) {
+            System.out.println("User not found!");
+            return;
+        }
+
+        userDAO.delete(userId != null ? userId : user.getId());
+
+        System.out.println();
+        System.out.println("User removed!");
     }
 }

@@ -13,9 +13,9 @@ public class Help {
         System.out.println("    , --logout                                  Logout from the current account");
         System.out.println("  -p, --profile [<User ID>]                     Show user profile");
         System.out.println(
-                "      --add    [review|book|achievement] [id|name] <value>  Add    a review, book or achievement");
+                "      --add    [review|book|achievement] [id|name] <value>  Add a review, book or achievement");
         System.out.println(
-                "      --remove [review|book|achievement] [id|name] <value>  remove a review, book or achievement");
+                "      --remove [review|book|achievement|user] [id|name|self] <value>  remove a review, book or achievement");
         System.out.println(
                 "  -u, --update [review|book|achievement] [id|name] <value>  update a review, book or achievement");
         System.out.println("  -b, --books [--page=<number>]                 List all books");
