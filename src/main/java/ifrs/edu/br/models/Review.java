@@ -122,13 +122,11 @@ public class Review {
                 this.title = title;
         }
 
-        public boolean addLike(User user) {
-                if (likes.contains(user)) {
-                        return false;
-                }
+        public void addLike(User user) {
+                if (likes.contains(user))
+                        throw new RuntimeException("User already liked this review");
 
                 likes.add(user);
-                return true;
         }
 
         @Override
@@ -136,12 +134,12 @@ public class Review {
                 long time = this.readEndDate.toEpochDay() - this.readStartDate.toEpochDay();
 
                 return "Review: \n" +
-                                "id: " + this.id + "\n" +
-                                "user: " + this.user.getName() + "\n" +
-                                "book: " + this.book.getTitle() + "\n" +
-                                "title: " + this.title + "\n" +
-                                "text: " + this.text + "\n" +
-                                "likes: " + this.likes.size() + "\n" +
-                                "Read Time: " + time + " day(s)";
+                                "\tid: " + this.id + "\n" +
+                                "\tuser: " + this.user.getName() + "\n" +
+                                "\tbook: " + this.book.getTitle() + "\n" +
+                                "\ttitle: " + this.title + "\n" +
+                                "\ttext: " + this.text + "\n" +
+                                "\tlikes: " + this.likes.size() + "\n" +
+                                "\tRead Time: " + time + " day(s)";
         }
 }

@@ -1,6 +1,5 @@
 package ifrs.edu.br.cli;
 
-import java.util.OptionalInt;
 import java.util.Scanner;
 
 import javax.persistence.EntityManager;
@@ -158,12 +157,12 @@ public class Remove {
             }
             Integer accountId = null;
 
-            if(mode.equals("id"))
-            try {
-                accountId = Integer.parseInt(value);
-            } catch (NumberFormatException exception) {
-                System.out.println("Error: invalid ID");
-            }
+            if (mode.equals("id"))
+                try {
+                    accountId = Integer.parseInt(value);
+                } catch (NumberFormatException exception) {
+                    System.out.println("Error: invalid ID");
+                }
 
             System.out.println("Removing a account using " + mode + ": " + value);
             removeAccount(accountId);
@@ -264,8 +263,8 @@ public class Remove {
         if (userId != null && !user.getRole().equals("ADMIN")) {
             System.out.println("You need to be an ADMIN to remove a user by ID");
             return;
-        } else if(userId != null && user.getRole().equals("ADMIN")) {
-             user = userDAO.find(userId);
+        } else if (userId != null && user.getRole().equals("ADMIN")) {
+            user = userDAO.find(userId);
         } else if (userId == null)
             Auth.logout();
 

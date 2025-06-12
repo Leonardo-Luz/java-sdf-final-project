@@ -47,11 +47,12 @@ public class Like {
             return;
         }
 
-        if (review.addLike(user)) {
+        try {
+            review.addLike(user);
             reviewDAO.update(review);
             System.out.println("Review liked!");
-        } else {
-            System.out.println("You alredy liked this review.");
+        } catch (RuntimeException err) {
+            System.out.println(err);
         }
     }
 }

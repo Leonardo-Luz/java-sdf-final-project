@@ -11,6 +11,13 @@ else
     exit 1
 fi
 
+if mvn dependency:build-classpath -Dmdep.outputFile=classpath.out; then
+    echo "Dependencies builded"
+else
+    echo "Build failed. Not installing."
+    exit 1
+fi
+
 if ! echo "$PATH" | grep -q "$HOME/.local/bin"; then
   echo "Note: Please add '$HOME/.local/bin' to your PATH to run 'bookreview'."
 fi

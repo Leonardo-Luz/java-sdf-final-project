@@ -56,6 +56,12 @@ public class Book {
         }
 
         public void setTitle(String title) {
+                if (title.isBlank())
+                        throw new RuntimeException("Title can't be blank.");
+
+                if (title.length() < 3)
+                        throw new RuntimeException("Title size can't be lower than 3.");
+
                 this.title = title;
         }
 
@@ -64,6 +70,12 @@ public class Book {
         }
 
         public void setPages(int pages) {
+                if (pages < 0)
+                        throw new RuntimeException("Pages can't be negative");
+
+                if (pages == 0)
+                        throw new RuntimeException("Pages can't be ZERO");
+
                 this.pages = pages;
         }
 
@@ -72,6 +84,12 @@ public class Book {
         }
 
         public void setSynopsis(String synopsis) {
+                if (synopsis.isBlank())
+                        throw new RuntimeException("Synopsis can't be blank.");
+
+                if (synopsis.length() < 3)
+                        throw new RuntimeException("Synopsis size can't be lower than 3.");
+
                 this.synopsis = synopsis;
         }
 
@@ -84,6 +102,7 @@ public class Book {
                                 "\tid: " + this.id + "\n" +
                                 "\ttitle: " + this.title + "\n" +
                                 "\tpages: " + this.pages + "\n" +
-                                "\tsynopsis: " + croppedSynopsis;
+                                "\tsynopsis: " + croppedSynopsis + "\n" +
+                                "\treviews: " + reviews.size();
         }
 }

@@ -31,14 +31,14 @@ public class Badge {
         private List<User> users;
 
         public Badge(int id, String name, String requirements) {
-                this.id = id;
-                this.name = name;
-                this.requirements = requirements;
+                setId(id);
+                setName(name);
+                setRequirements(requirements);
         }
 
         public Badge(String name, String requirements) {
-                this.name = name;
-                this.requirements = requirements;
+                setName(name);
+                setRequirements(requirements);
         }
 
         public Badge() {
@@ -49,6 +49,9 @@ public class Badge {
         }
 
         public void setId(int id) {
+                if (id < 0)
+                        throw new RuntimeException("ID can't be negative.");
+
                 this.id = id;
         }
 
@@ -57,6 +60,12 @@ public class Badge {
         }
 
         public void setName(String name) {
+                if (name.isBlank())
+                        throw new RuntimeException("Name can't be blank.");
+
+                if (name.length() < 3)
+                        throw new RuntimeException("Name size can't be lower than 3.");
+
                 this.name = name;
         }
 
@@ -65,6 +74,12 @@ public class Badge {
         }
 
         public void setRequirements(String requirements) {
+                if (requirements.isBlank())
+                        throw new RuntimeException("Requirements can't be blank.");
+
+                if (requirements.length() < 3)
+                        throw new RuntimeException("Requirements size can't be lower than 3.");
+
                 this.requirements = requirements;
         }
 

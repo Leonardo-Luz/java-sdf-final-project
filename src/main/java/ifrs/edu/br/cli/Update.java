@@ -3,7 +3,6 @@ package ifrs.edu.br.cli;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import javax.persistence.EntityManager;

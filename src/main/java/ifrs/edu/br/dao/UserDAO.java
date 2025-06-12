@@ -14,6 +14,14 @@ public class UserDAO extends DAO<User> {
         super(User.class, entityManager);
     }
 
+    @Override
+    public User find(int id) {
+        User user = entityManager.find(User.class, id);
+        user.setAge();
+
+        return user;
+    }
+
     public User login(String email, String password) {
         try {
             TypedQuery<User> query = entityManager.createQuery(
@@ -22,7 +30,10 @@ public class UserDAO extends DAO<User> {
             query.setParameter("email", email);
             query.setParameter("password", password);
 
-            return query.getSingleResult();
+            User user = query.getSingleResult();
+            user.setAge();
+
+            return user;
         } catch (NoResultException e) {
             return null;
         }
@@ -35,7 +46,10 @@ public class UserDAO extends DAO<User> {
 
             query.setParameter("email", email);
 
-            return query.getSingleResult();
+            User user = query.getSingleResult();
+            user.setAge();
+
+            return user;
         } catch (NoResultException e) {
             return null;
         }

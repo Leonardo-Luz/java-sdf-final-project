@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  * User
@@ -29,6 +30,9 @@ public class User {
         @Column(nullable = true)
         private LocalDate birthday;
 
+        @Transient
+        private int age;
+
         @ManyToMany(mappedBy = "users")
         private List<Badge> badges;
 
@@ -39,20 +43,20 @@ public class User {
         private List<Review> likes;
 
         public User(int id, String email, String name, String password, LocalDate birthday) {
-                this.id = id;
-                this.email = email;
-                this.name = name;
-                this.password = password;
-                this.birthday = birthday;
-                this.role = "READER";
+                this.setId(id);
+                this.setEmail(email);
+                this.setName(name);
+                this.setPassword(password);
+                this.setBirthday(birthday);
+                this.setRole("READER");
         }
 
         public User(String email, String name, String password, LocalDate birthday) {
-                this.email = email;
-                this.name = name;
-                this.password = password;
-                this.birthday = birthday;
-                this.role = "READER";
+                this.setEmail(email);
+                this.setName(name);
+                this.setPassword(password);
+                this.setBirthday(birthday);
+                this.setRole("READER");
         }
 
         public User() {
@@ -88,6 +92,7 @@ public class User {
 
         public void setBirthday(LocalDate birthday) {
                 this.birthday = birthday;
+                setAge();
         }
 
         public String getEmail() {
@@ -130,14 +135,22 @@ public class User {
                 this.likes = likes;
         }
 
+        public int getAge() {
+                return age;
+        }
+
+        public void setAge() {
+                this.age = (int) ((LocalDate.now().toEpochDay() - birthday.toEpochDay()) / 365);
+        }
+
         @Override
         public String toString() {
                 return "User: \n" +
                                 "\tid: " + this.id + "\n" +
                                 "\temail: " + this.email + "\n" +
                                 "\tname: " + this.name + "\n" +
-                                "\tpassword: " + ("*").repeat(this.password.length()/3) + "\n" +
+                                "\tpassword: " + ("*").repeat(this.password.length() / 3) + "\n" +
                                 "\trole: " + this.role + "\n" +
-                                "\tbirthday: " + this.birthday + "\n";
+                                "\tage: " + this.age + " years old\n";
         }
 }
