@@ -16,13 +16,13 @@ public class BadgeTest {
 	private Badge badge;
 
 	@BeforeEach
-	private void setup() {
+	public void setup() {
 		badge = new Badge("default test name", "default test requirement");
 	}
 
 	@Test
 	@DisplayName("Test set badge name with valid arguments")
-	private void badgeSetValidNameTest() {
+	public void badgeSetValidNameTest() {
 		badge.setName("test name");
 
 		assertEquals("test name", badge.getName());
@@ -30,7 +30,7 @@ public class BadgeTest {
 
 	@Test
 	@DisplayName("Test set badge name with invalid arguments, too small")
-	private void badgeSetInvalidSmallNameTest() {
+	public void badgeSetInvalidSmallNameTest() {
 		assertThrows(RuntimeException.class, () -> {
 			badge.setName("a");
 		});
@@ -38,7 +38,7 @@ public class BadgeTest {
 
 	@Test
 	@DisplayName("Test set badge name with invalid arguments, blank")
-	private void badgeSetInvalidNullNameTest() {
+	public void badgeSetInvalidNullNameTest() {
 		assertThrows(RuntimeException.class, () -> {
 			badge.setName("        ");
 		});
@@ -46,7 +46,7 @@ public class BadgeTest {
 
 	@Test
 	@DisplayName("Test set badge requirement with valid arguments")
-	private void badgeSetValidRequirementTest() {
+	public void badgeSetValidRequirementTest() {
 		badge.setRequirements("test requirement");
 
 		assertEquals("test requirement", badge.getRequirements());
@@ -54,7 +54,7 @@ public class BadgeTest {
 
 	@Test
 	@DisplayName("Test set badge requirement with invalid arguments, too small")
-	private void badgeSetInvalidSmallRequirementTest() {
+	public void badgeSetInvalidSmallRequirementTest() {
 		assertThrows(RuntimeException.class, () -> {
 			badge.setRequirements("a");
 		});
@@ -62,7 +62,7 @@ public class BadgeTest {
 
 	@Test
 	@DisplayName("Test set badge requirement with invalid arguments, null")
-	private void badgeSetInvalidNullRequirementTest() {
+	public void badgeSetInvalidNullRequirementTest() {
 		assertThrows(RuntimeException.class, () -> {
 			badge.setRequirements("        ");
 		});

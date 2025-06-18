@@ -2,11 +2,11 @@ package ifrs.edu.br.context;
 
 import ifrs.edu.br.models.User;
 import ifrs.edu.br.dao.UserDAO;
+import ifrs.edu.br.utils.FileManager;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Scanner;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -17,10 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 public class Auth {
     private static BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    private static final String AUTH_PATH = System.getProperty("user.home") + "/.config/.reviewauth.pass";
 
     public static void login(EntityManager entityManager, String email, String password) {
-        if (isLogged()) {
+        if (FileManager.exists()) {
             System.out.println("Already logged in.");
             return;
         }
@@ -33,18 +32,20 @@ public class Auth {
             return;
         }
 
-        try (FileWriter writer = new FileWriter(AUTH_PATH)) {
-            writer.write(email);
-            writer.write("\n");
-            writer.write(password);
-            System.out.println("Login successful.");
-        } catch (IOException e) {
-            e.printStackTrace();
+        ArrayList<String> fileData = new ArrayList<>();
+        fileData.add(user.getEmail());
+        fileData.add(password);
+
+        try {
+            FileManager.create(fileData);
+            System.out.println("Signup successful.");
+        } catch (RuntimeException err) {
+            System.out.println(err);
         }
     }
 
     public static void signup(EntityManager entityManager, User user) {
-        if (isLogged()) {
+        if (FileManager.exists()) {
             System.out.println("Already logged in.");
             return;
         }
@@ -55,54 +56,36 @@ public class Auth {
         user.setPassword(hashedPassword);
         userDAO.insert(user);
 
-        try (FileWriter writer = new FileWriter(AUTH_PATH)) {
-            writer.write(user.getEmail());
-            writer.write("\n");
-            writer.write(rawPassword);
+        ArrayList<String> fileData = new ArrayList<>();
+        fileData.add(user.getEmail());
+        fileData.add(rawPassword);
+
+        try {
+            FileManager.create(fileData);
             System.out.println("Signup successful.");
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (RuntimeException err) {
+            System.out.println(err);
         }
     }
 
     public static void logout() {
-        File file = new File(AUTH_PATH);
-        if (!file.exists()) {
-            System.out.println("Not logged in.");
-            return;
-        }
-
-        if (file.delete()) {
-            System.out.println("Logged out successfully.");
-        } else {
-            System.out.println("Logout failed.");
+        try {
+            FileManager.delete();
+        } catch (Exception err) {
+            System.out.println(err);
         }
     }
 
     public static User verify(EntityManager entityManager) {
         try {
-            File file = new File(AUTH_PATH);
-            if (!file.exists())
+            if (!FileManager.exists())
                 return null;
 
-            Scanner scanner = new Scanner(file);
-            if (!scanner.hasNextLine()) {
-                scanner.close();
-                System.out.println("Verification failed, loggin out...");
-                return null;
-            }
+            List<String> data = FileManager.get();
 
-            String email = scanner.nextLine().trim();
+            String email = data.get(0);
 
-            if (!scanner.hasNextLine()) {
-                scanner.close();
-                System.out.println("Verification failed, loggin out...");
-                logout();
-                return null;
-            }
-
-            String password = scanner.nextLine().trim();
-            scanner.close();
+            String password = data.get(1);
 
             UserDAO userDAO = new UserDAO(entityManager);
             User user = userDAO.findByEmail(email);
@@ -114,13 +97,13 @@ public class Auth {
             }
 
             return user;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IndexOutOfBoundsException err) {
+            System.out.println("Verification failed, loggin out...");
+            logout();
+            return null;
+        } catch (FileNotFoundException e) {
+            System.out.println("Login file not found!");
             return null;
         }
-    }
-
-    public static boolean isLogged() {
-        return new File(AUTH_PATH).exists();
     }
 }

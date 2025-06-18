@@ -16,13 +16,13 @@ public class BookTest {
 	private Book book;
 
 	@BeforeEach
-	private void setup() {
+	public void setup() {
 		book = new Book("default test title", 10, "default test synopsis");
 	}
 
 	@Test
 	@DisplayName("Test set book title with valid arguments")
-	private void BookSetValidTitleTest() {
+	public void BookSetValidTitleTest() {
 		book.setTitle("test title");
 
 		assertEquals("test title", book.getTitle());
@@ -30,7 +30,7 @@ public class BookTest {
 
 	@Test
 	@DisplayName("Test set book title with invalid arguments, too small")
-	private void BookSetInvalidSmallTitleTest() {
+	public void BookSetInvalidSmallTitleTest() {
 		assertThrows(RuntimeException.class, () -> {
 			book.setTitle("a");
 		});
@@ -38,7 +38,7 @@ public class BookTest {
 
 	@Test
 	@DisplayName("Test set book title with valid arguments, blank")
-	private void BookSetInvalidBlankTitleTest() {
+	public void BookSetInvalidBlankTitleTest() {
 		assertThrows(RuntimeException.class, () -> {
 			book.setTitle("        ");
 		});
@@ -46,7 +46,7 @@ public class BookTest {
 
 	@Test
 	@DisplayName("Test set book pages with valid arguments")
-	private void BookSetValidPagesTest() {
+	public void BookSetValidPagesTest() {
 		book.setPages(100);
 
 		assertEquals(100, book.getPages());
@@ -54,7 +54,7 @@ public class BookTest {
 
 	@Test
 	@DisplayName("Test set book pages with invalid arguments, negative")
-	private void BookSetInvalidNegativePagesTest() {
+	public void BookSetInvalidNegativePagesTest() {
 		assertThrows(RuntimeException.class, () -> {
 			book.setPages(-10);
 		});
@@ -62,7 +62,7 @@ public class BookTest {
 
 	@Test
 	@DisplayName("Test set book pages with invalid arguments, zero")
-	private void BookSetInvalidZeroPagesTest() {
+	public void BookSetInvalidZeroPagesTest() {
 		assertThrows(RuntimeException.class, () -> {
 			book.setPages(0);
 		});
@@ -70,7 +70,7 @@ public class BookTest {
 
 	@Test
 	@DisplayName("Test set book synopsis with valid arguments")
-	private void BookSetValidSynopsisTest() {
+	public void BookSetValidSynopsisTest() {
 		book.setSynopsis("test synopsis");
 
 		assertEquals("test synopsis", book.getSynopsis());
@@ -78,7 +78,7 @@ public class BookTest {
 
 	@Test
 	@DisplayName("Test set book synopsis with invalid arguments, too small")
-	private void BookSetInvalidSmallSynopsisTest() {
+	public void BookSetInvalidSmallSynopsisTest() {
 		assertThrows(RuntimeException.class, () -> {
 			book.setSynopsis("a");
 		});
@@ -86,7 +86,7 @@ public class BookTest {
 
 	@Test
 	@DisplayName("Test set book synopsis with valid arguments, blank")
-	private void BookSetInvalidBlankSynopsisTest() {
+	public void BookSetInvalidBlankSynopsisTest() {
 		assertThrows(RuntimeException.class, () -> {
 			book.setSynopsis("        ");
 		});
