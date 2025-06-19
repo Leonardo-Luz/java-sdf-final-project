@@ -2,9 +2,12 @@ package ifrs.edu.br.cli;
 
 import javax.persistence.EntityManager;
 
-import ifrs.edu.br.context.Auth;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import ifrs.edu.br.controllers.UserController;
 import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.models.User;
+import ifrs.edu.br.utils.FileManager;
 
 /**
  * Profile
@@ -36,27 +39,23 @@ public class Profile {
     }
 
     public static void showLoggedProfile() {
-        UserDAO userDAO = new UserDAO(entityManager);
-
-        User user = Auth.verify(entityManager);
+        UserController userController = new UserController(new UserDAO(entityManager), new FileManager(),
+                new BCryptPasswordEncoder());
+        User user = userController.verify();
 
         if (user == null) {
-            System.out.println("Not logged in.");
+            System.out.println("You need to login to see your profile");
             return;
         }
 
-        System.out.println(userDAO.find(user.getId()));
+        System.out.println(user);
     }
 
     public static void showProfileFromUser(int id) {
-        UserDAO userDAO = new UserDAO(entityManager);
+        UserController userController = new UserController(new UserDAO(entityManager), new FileManager(),
+                new BCryptPasswordEncoder());
 
-        User user = userDAO.find(id);
-
-        if (user == null) {
-            System.out.println("User not Found!");
-            return;
-        }
+        User user = userController.findHandler(id);
 
         String emailStart = user.getEmail().substring(0, user.getEmail().length() / 5);
         String emailEnd = user.getEmail().substring(user.getEmail().length() - user.getEmail().length() / 5);

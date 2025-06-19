@@ -4,11 +4,17 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import ifrs.edu.br.dao.ReviewDAO;
 import ifrs.edu.br.dao.UserDAO;
+import ifrs.edu.br.controllers.BookController;
+import ifrs.edu.br.controllers.ReviewController;
+import ifrs.edu.br.controllers.UserController;
 import ifrs.edu.br.dao.BookDAO;
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
+import ifrs.edu.br.utils.FileManager;
 import ifrs.edu.br.models.Book;
 
 /**
@@ -73,38 +79,30 @@ public class Reviews {
     }
 
     private static void logic(String context, int id, int page) {
-        ReviewDAO reviewDAO = new ReviewDAO(entityManager);
+        ReviewController reviewController = new ReviewController(new ReviewDAO(entityManager));
 
         List<Review> reviews = null;
 
         switch (context) {
             case "user":
-                UserDAO userDAO = new UserDAO(entityManager);
-                User user = userDAO.find(id);
-                if (user == null) {
-                    System.out.println("User not found!");
-                    return;
-                }
-                reviews = reviewDAO.listByUser(10, page * 10, user);
+                UserController userController = new UserController(new UserDAO(entityManager), new FileManager(),
+                        new BCryptPasswordEncoder());
+
+                User user = userController.findHandler(id);
+
+                reviews = reviewController.listByUserHandler(10, page * 10, user);
                 break;
             case "book":
-                BookDAO bookDAO = new BookDAO(entityManager);
-                Book book = bookDAO.find(id);
-                if (book == null) {
-                    System.out.println("Book not found!");
-                    return;
-                }
-                reviews = reviewDAO.listByBook(10, page * 10, book);
+                BookController bookController = new BookController(new BookDAO(entityManager));
+
+                Book book = bookController.findHandler(id);
+
+                reviews = reviewController.listByBookHandler(10, page * 10, book);
                 break;
         }
 
         if (reviews == null) {
             System.out.println("Error: context not found");
-        }
-
-        if (reviews.size() == 0) {
-            System.out.println("There're no registered reviews");
-            return;
         }
 
         System.out.println();

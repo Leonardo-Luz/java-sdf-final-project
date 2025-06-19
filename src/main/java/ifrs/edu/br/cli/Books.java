@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import ifrs.edu.br.controllers.BookController;
 import ifrs.edu.br.dao.BookDAO;
 import ifrs.edu.br.models.Book;
 
@@ -38,14 +39,9 @@ public class Books {
     }
 
     private static void logic(int page) {
-        BookDAO bookDAO = new BookDAO(entityManager);
+        BookController bookController = new BookController(new BookDAO(entityManager));
 
-        List<Book> books = bookDAO.list(10, page * 10);
-
-        if (books.size() == 0) {
-            System.out.println("There're no registered books");
-            return;
-        }
+        List<Book> books = bookController.listHandler(10, page * 10);
 
         System.out.println();
         books.forEach((book) -> {

@@ -2,10 +2,15 @@ package ifrs.edu.br.cli;
 
 import javax.persistence.EntityManager;
 
-import ifrs.edu.br.context.Auth;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import ifrs.edu.br.controllers.ReviewController;
+import ifrs.edu.br.controllers.UserController;
 import ifrs.edu.br.dao.ReviewDAO;
+import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
+import ifrs.edu.br.utils.FileManager;
 
 /**
  * Like
@@ -32,24 +37,20 @@ public class Like {
     }
 
     private static void logic(int id) {
-        User user = Auth.verify(entityManager);
+        User user = new UserController(new UserDAO(entityManager), new FileManager(), new BCryptPasswordEncoder())
+                .verify();
+
         if (user == null) {
-            System.out.println("You need to be logged to like a review");
+            System.out.println("You need to login before adding a book");
             return;
         }
 
-        ReviewDAO reviewDAO = new ReviewDAO(entityManager);
-
-        Review review = reviewDAO.find(id);
-
-        if (review == null) {
-            System.out.println("Review not found!");
-            return;
-        }
+        ReviewController reviewController = new ReviewController(new ReviewDAO(entityManager));
+        Review review = reviewController.findHandler(id);
 
         try {
             review.addLike(user);
-            reviewDAO.update(review);
+            reviewController.updateHandler(review);
             System.out.println("Review liked!");
         } catch (RuntimeException err) {
             System.out.println(err);

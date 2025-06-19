@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import ifrs.edu.br.controllers.BadgeController;
 import ifrs.edu.br.dao.BadgeDAO;
 import ifrs.edu.br.models.Badge;
 
@@ -46,14 +47,9 @@ public class Achievements {
     }
 
     public static void achievementList() {
-        BadgeDAO badgeDAO = new BadgeDAO(entityManager);
+        BadgeController badgeController = new BadgeController(new BadgeDAO(entityManager));
 
-        List<Badge> badges = badgeDAO.list(10, 0); // TODO: Add pagination
-
-        if (badges.size() == 0) {
-            System.out.println("There're no registered achievements");
-            return;
-        }
+        List<Badge> badges = badgeController.listHandler(10, 0);
 
         System.out.println();
         badges.forEach((badge) -> {
@@ -63,14 +59,9 @@ public class Achievements {
     }
 
     public static void unlockAchievement(int id) {
-        BadgeDAO badgeDAO = new BadgeDAO(entityManager);
+        BadgeController badgeController = new BadgeController(new BadgeDAO(entityManager));
 
-        Badge badge = badgeDAO.find(id);
-
-        if (badge == null) {
-            System.out.println("Achievement not found!");
-            return;
-        }
+        Badge badge = badgeController.findHandler(id);
 
         System.out.println(badge);
     }

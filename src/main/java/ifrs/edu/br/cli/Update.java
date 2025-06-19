@@ -9,10 +9,15 @@ import javax.persistence.EntityManager;
 
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
+import ifrs.edu.br.utils.FileManager;
 import ifrs.edu.br.models.Badge;
 import ifrs.edu.br.models.Book;
 import ifrs.edu.br.dao.ReviewDAO;
-import ifrs.edu.br.context.Auth;
+import ifrs.edu.br.dao.UserDAO;
+import ifrs.edu.br.controllers.BadgeController;
+import ifrs.edu.br.controllers.BookController;
+import ifrs.edu.br.controllers.ReviewController;
+import ifrs.edu.br.controllers.UserController;
 import ifrs.edu.br.dao.BadgeDAO;
 import ifrs.edu.br.dao.BookDAO;
 
@@ -145,19 +150,17 @@ public class Update {
     }
 
     private static void updateReview(int reviewId) {
-        User user = Auth.verify(entityManager);
+        FileManager fileManager = new FileManager();
+        UserDAO userDAO = new UserDAO(entityManager);
+        UserController userController = new UserController(userDAO, fileManager);
+        User user = userController.verify();
         if (user == null) {
             System.out.println("You need to login before updating a review");
             return;
         }
 
-        ReviewDAO reviewDAO = new ReviewDAO(entityManager);
-        Review review = reviewDAO.find(reviewId);
-
-        if (review == null) {
-            System.out.println("Review not found!");
-            return;
-        }
+        ReviewController reviewController = new ReviewController(new ReviewDAO(entityManager));
+        Review review = reviewController.findHandler(reviewId);
 
         if (!user.getRole().equals("ADMIN") && review.getUser().getId() != user.getId()) {
             System.out.println("Only ADMINS can update non-owned reviews.");
@@ -205,28 +208,30 @@ public class Update {
             bookId = -1;
         }
 
-        BookDAO bookDAO = new BookDAO(entityManager);
-        Book book = bookDAO.find(bookId);
+        BookController bookController = new BookController(new BookDAO(entityManager));
+        Book book = bookController.findHandler(bookId);
 
-        if (title.length() > 0)
+        try {
             review.setTitle(title);
-        if (text.length() > 0)
             review.setText(text);
-        if (readStartDate != null)
             review.setReadStartDate(readStartDate);
-        if (readEndDate != null)
             review.setReadEndDate(readEndDate);
-        if (book != null)
             review.setBook(book);
+        } catch (RuntimeException err) {
+            System.out.println(err);
+        }
 
-        reviewDAO.update(review);
+        reviewController.updateHandler(review);
 
         System.out.println();
         System.out.println("Review updated!");
     }
 
     private static void updateBook(int bookId) {
-        User user = Auth.verify(entityManager);
+        FileManager fileManager = new FileManager();
+        UserDAO userDAO = new UserDAO(entityManager);
+        UserController userController = new UserController(userDAO, fileManager);
+        User user = userController.verify();
         if (user == null) {
             System.out.println("You need to be logged to update a book");
             return;
@@ -237,8 +242,8 @@ public class Update {
             return;
         }
 
-        BookDAO bookDAO = new BookDAO(entityManager);
-        Book book = bookDAO.find(bookId);
+        BookController bookController = new BookController(new BookDAO(entityManager));
+        Book book = bookController.findHandler(bookId);
 
         if (book == null) {
             System.out.println("Book not found!");
@@ -263,21 +268,25 @@ public class Update {
         System.out.print("> ");
         String synopsis = scanner.nextLine();
 
-        if (title.length() > 0)
+        try {
             book.setTitle(title);
-        if (pages > 0)
             book.setPages(pages);
-        if (synopsis.length() > 0)
             book.setSynopsis(synopsis);
+        } catch (RuntimeException e) {
+            System.out.println(e);
+        }
 
-        bookDAO.update(book);
+        bookController.updateHandler(book);
 
         System.out.println();
         System.out.println("Book updated!");
     }
 
     private static void updateAchievement(int badgeId) {
-        User user = Auth.verify(entityManager);
+        FileManager fileManager = new FileManager();
+        UserDAO userDAO = new UserDAO(entityManager);
+        UserController userController = new UserController(userDAO, fileManager);
+        User user = userController.verify();
         if (user == null) {
             System.out.println("You need to login before updating a review");
             return;
@@ -288,13 +297,8 @@ public class Update {
             return;
         }
 
-        BadgeDAO badgeDAO = new BadgeDAO(entityManager);
-        Badge badge = badgeDAO.find(badgeId);
-
-        if (badge == null) {
-            System.out.println("Badge not found!");
-            return;
-        }
+        BadgeController badgeController = new BadgeController(new BadgeDAO(entityManager));
+        Badge badge = badgeController.findHandler(badgeId);
 
         System.out.println("> name");
         System.out.print("> ");
@@ -304,12 +308,14 @@ public class Update {
         System.out.print("> ");
         String requirements = scanner.nextLine();
 
-        if (name.length() > 0)
+        try {
             badge.setName(name);
-        if (requirements.length() > 0)
             badge.setRequirements(requirements);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
-        badgeDAO.update(badge);
+        badgeController.updateHandler(badge);
 
         System.out.println();
         System.out.println("Achievement updated!");

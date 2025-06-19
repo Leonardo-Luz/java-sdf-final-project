@@ -8,12 +8,11 @@ import ifrs.edu.br.cli.Books;
 import ifrs.edu.br.cli.Help;
 import ifrs.edu.br.cli.Like;
 import ifrs.edu.br.cli.Login;
+import ifrs.edu.br.cli.Logout;
 import ifrs.edu.br.cli.Reviews;
 import ifrs.edu.br.cli.Signup;
 import ifrs.edu.br.cli.Update;
 import ifrs.edu.br.cli.Version;
-
-import ifrs.edu.br.context.Auth;
 
 /**
  * Hello world!
@@ -49,7 +48,8 @@ public class App {
                 break;
 
             case "--logout":
-                Auth.logout();
+                Database.connect();
+                Logout.command(Database.getEntityManager());
                 break;
 
             case "--add":

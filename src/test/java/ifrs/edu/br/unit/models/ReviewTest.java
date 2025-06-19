@@ -85,6 +85,7 @@ public class ReviewTest {
 		LocalDate start = LocalDate.of(2000, 12, 25);
 		LocalDate end = LocalDate.of(1990, 12, 25);
 
+		review.setReadEndDate(LocalDate.of(2020, 12, 25));
 		review.setReadStartDate(start);
 
 		assertThrows(RuntimeException.class, () -> {

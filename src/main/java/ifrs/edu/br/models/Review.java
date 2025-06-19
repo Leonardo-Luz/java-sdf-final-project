@@ -45,22 +45,22 @@ public class Review {
 
         public Review(int id, String title, String text, LocalDate readStartDate, LocalDate readEndDate, Book book,
                         User user) {
-                this.id = id;
-                this.title = title;
-                this.text = text;
-                this.readStartDate = readStartDate;
-                this.readEndDate = readEndDate;
-                this.book = book;
-                this.user = user;
+                this.setId(id);
+                this.setTitle(title);
+                this.setText(text);
+                this.setReadStartDate(readStartDate);
+                this.setReadEndDate(readEndDate);
+                this.setBook(book);
+                this.setUser(user);
         }
 
         public Review(String title, String text, LocalDate readStartDate, LocalDate readEndDate, Book book, User user) {
-                this.title = title;
-                this.text = text;
-                this.readStartDate = readStartDate;
-                this.readEndDate = readEndDate;
-                this.book = book;
-                this.user = user;
+                this.setTitle(title);
+                this.setText(text);
+                this.setReadStartDate(readStartDate);
+                this.setReadEndDate(readEndDate);
+                this.setBook(book);
+                this.setUser(user);
         }
 
         public Review() {
@@ -71,6 +71,9 @@ public class Review {
         }
 
         public void setId(int id) {
+                if (id < 0)
+                        throw new RuntimeException("Id can't be negative!");
+
                 this.id = id;
         }
 
@@ -79,6 +82,12 @@ public class Review {
         }
 
         public void setText(String text) {
+                if (text.isBlank())
+                        throw new RuntimeException("Text can't be blank");
+
+                if (text.length() < 6)
+                        throw new RuntimeException("Text length can't be lower than 6");
+
                 this.text = text;
         }
 
@@ -87,6 +96,12 @@ public class Review {
         }
 
         public void setReadStartDate(LocalDate readStartDate) {
+                if(readStartDate.toEpochDay() > LocalDate.now().toEpochDay())
+                        throw new RuntimeException("Read start date can't be in the future!");
+
+                if(readEndDate != null && readStartDate.toEpochDay() > readEndDate.toEpochDay())
+                        throw new RuntimeException("Read start date can't be after read end date!");
+
                 this.readStartDate = readStartDate;
         }
 
@@ -95,6 +110,12 @@ public class Review {
         }
 
         public void setReadEndDate(LocalDate readEndDate) {
+                if(readEndDate.toEpochDay() > LocalDate.now().toEpochDay())
+                        throw new RuntimeException("Read end date can't be in the future!");
+
+                if(readStartDate != null && readEndDate.toEpochDay() < readStartDate.toEpochDay())
+                        throw new RuntimeException("Read end date can't be before read start date!");
+
                 this.readEndDate = readEndDate;
         }
 
@@ -119,6 +140,12 @@ public class Review {
         }
 
         public void setTitle(String title) {
+                if (title.isBlank())
+                        throw new RuntimeException("Title can't be blank");
+
+                if (title.length() < 6)
+                        throw new RuntimeException("Title length can't be lower than 6");
+
                 this.title = title;
         }
 

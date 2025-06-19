@@ -12,9 +12,9 @@ import java.util.Scanner;
  * FileManager
  */
 public class FileManager {
-    private static final String AUTH_PATH = System.getProperty("user.home") + "/.config/.reviewauth.pass";
+    private final String AUTH_PATH = System.getProperty("user.home") + "/.config/.reviewauth.pass";
 
-    public static void create(List<String> fileData) {
+    public void create(List<String> fileData) {
         try (FileWriter writer = new FileWriter(AUTH_PATH)) {
             for (String line : fileData)
                 writer.write(line + "\n");
@@ -23,7 +23,7 @@ public class FileManager {
         }
     }
 
-    public static List<String> get() throws FileNotFoundException {
+    public List<String> get() throws FileNotFoundException {
         ArrayList<String> fileData = new ArrayList<>();
 
         File file = new File(AUTH_PATH);
@@ -44,7 +44,7 @@ public class FileManager {
         return fileData;
     }
 
-    public static void delete() {
+    public void delete() {
         File file = new File(AUTH_PATH);
 
         if (!file.exists())
@@ -54,7 +54,7 @@ public class FileManager {
             throw new RuntimeException("Logout Failed");
     }
 
-    public static boolean exists() {
+    public boolean exists() {
         return new File(AUTH_PATH).exists();
     }
 }

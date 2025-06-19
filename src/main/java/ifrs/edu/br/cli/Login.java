@@ -4,14 +4,23 @@ import java.util.Scanner;
 
 import javax.persistence.EntityManager;
 
-import ifrs.edu.br.context.Auth;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import ifrs.edu.br.controllers.UserController;
+import ifrs.edu.br.dao.UserDAO;
+import ifrs.edu.br.models.User;
+import ifrs.edu.br.utils.FileManager;
 
 /**
  * Login
  */
 public class Login {
     public static void command(EntityManager entityManager) {
-        if (Auth.isLogged()) {
+        UserController userController = new UserController(new UserDAO(entityManager), new FileManager(),
+                new BCryptPasswordEncoder());
+        User user = userController.verify();
+
+        if (user != null) {
             System.out.println("Already logged in.");
             return;
         }
@@ -27,6 +36,6 @@ public class Login {
         String password = scanner.nextLine();
 
         scanner.close();
-        Auth.login(entityManager, email, password);
+        userController.loginHandler(email, password);
     }
 }
