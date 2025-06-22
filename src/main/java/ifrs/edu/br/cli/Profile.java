@@ -1,23 +1,13 @@
 package ifrs.edu.br.cli;
 
-import javax.persistence.EntityManager;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import ifrs.edu.br.controllers.UserController;
-import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.models.User;
-import ifrs.edu.br.utils.FileManager;
 
 /**
  * Profile
  */
 public class Profile {
-    private static EntityManager entityManager;
-
-    public static void command(String[] args, EntityManager entityManager) {
-        Profile.entityManager = entityManager;
-
+    public static void command(String[] args) {
         if (args.length == 1) {
             System.out.println("Showing profile of the logged-in user");
             showLoggedProfile();
@@ -39,8 +29,7 @@ public class Profile {
     }
 
     public static void showLoggedProfile() {
-        UserController userController = new UserController(new UserDAO(entityManager), new FileManager(),
-                new BCryptPasswordEncoder());
+        UserController userController = new UserController();
         User user = userController.verify();
 
         if (user == null) {
@@ -52,8 +41,7 @@ public class Profile {
     }
 
     public static void showProfileFromUser(int id) {
-        UserController userController = new UserController(new UserDAO(entityManager), new FileManager(),
-                new BCryptPasswordEncoder());
+        UserController userController = new UserController();
 
         User user = userController.findHandler(id);
 

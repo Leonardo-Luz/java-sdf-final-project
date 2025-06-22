@@ -2,20 +2,14 @@ package ifrs.edu.br.cli;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import ifrs.edu.br.controllers.BadgeController;
-import ifrs.edu.br.dao.BadgeDAO;
 import ifrs.edu.br.models.Badge;
 
 /**
  * Achievements
  */
 public class Achievements {
-    private static EntityManager entityManager;
-
-    public static void command(String args[], EntityManager entityManager) {
-        Achievements.entityManager = entityManager;
+    public static void command(String args[]) {
 
         if (args.length == 2) {
             String secondArg = args[1];
@@ -47,7 +41,7 @@ public class Achievements {
     }
 
     public static void achievementList() {
-        BadgeController badgeController = new BadgeController(new BadgeDAO(entityManager));
+        BadgeController badgeController = new BadgeController();
 
         List<Badge> badges = badgeController.listHandler(10, 0);
 
@@ -59,7 +53,7 @@ public class Achievements {
     }
 
     public static void unlockAchievement(int id) {
-        BadgeController badgeController = new BadgeController(new BadgeDAO(entityManager));
+        BadgeController badgeController = new BadgeController();
 
         Badge badge = badgeController.findHandler(id);
 

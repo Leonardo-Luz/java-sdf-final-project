@@ -15,6 +15,10 @@ public class BookController implements Controller<Book> {
         this.bookDAO = bookDAO;
     }
 
+    public BookController() {
+        this.bookDAO = new BookDAO();
+    }
+
     public List<Book> listHandler(int limit, int offset) {
         try {
             if (limit < 0)
@@ -32,7 +36,7 @@ public class BookController implements Controller<Book> {
 
             return list;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -45,7 +49,7 @@ public class BookController implements Controller<Book> {
 
             bookDAO.insert(object);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -62,7 +66,7 @@ public class BookController implements Controller<Book> {
 
             return book;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -75,7 +79,7 @@ public class BookController implements Controller<Book> {
 
             bookDAO.update(object);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -87,7 +91,7 @@ public class BookController implements Controller<Book> {
 
             bookDAO.delete(id);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 

@@ -2,22 +2,15 @@ package ifrs.edu.br.cli;
 
 import java.util.Scanner;
 
-import javax.persistence.EntityManager;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import ifrs.edu.br.controllers.UserController;
-import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.models.User;
-import ifrs.edu.br.utils.FileManager;
 
 /**
  * Login
  */
 public class Login {
-    public static void command(EntityManager entityManager) {
-        UserController userController = new UserController(new UserDAO(entityManager), new FileManager(),
-                new BCryptPasswordEncoder());
+    public static void command() {
+        UserController userController = new UserController();
         User user = userController.verify();
 
         if (user != null) {

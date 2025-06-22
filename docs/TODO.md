@@ -2,6 +2,8 @@
 
 - [ ] Implement Badge tier enum (e.g. bronze, silver and gold))
 - [ ] Implement enum for user role (e.g. ADMIN and READER)
+- [ ] Implement JWT verification with expiration date
+- [ ] Implement token refresh on expiration
 - [ ] remove authentication methods from controller ?
 
 - [x] Implement Controllers

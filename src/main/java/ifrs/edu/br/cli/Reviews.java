@@ -2,30 +2,18 @@ package ifrs.edu.br.cli;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import ifrs.edu.br.dao.ReviewDAO;
-import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.controllers.BookController;
 import ifrs.edu.br.controllers.ReviewController;
 import ifrs.edu.br.controllers.UserController;
-import ifrs.edu.br.dao.BookDAO;
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
-import ifrs.edu.br.utils.FileManager;
 import ifrs.edu.br.models.Book;
 
 /**
  * Reviews
  */
 public class Reviews {
-    private static EntityManager entityManager;
-
-    public static void command(String args[], EntityManager entityManager) {
-        Reviews.entityManager = entityManager;
-
+    public static void command(String args[]) {
         if (args.length < 3) {
             System.out.println("Error: Missing required arguments.");
             System.out.println("Usage: --reviews [book|user] <ID> [--order=asc|desc] [--order-by=likes|release]");
@@ -79,21 +67,20 @@ public class Reviews {
     }
 
     private static void logic(String context, int id, int page) {
-        ReviewController reviewController = new ReviewController(new ReviewDAO(entityManager));
+        ReviewController reviewController = new ReviewController();
 
         List<Review> reviews = null;
 
         switch (context) {
             case "user":
-                UserController userController = new UserController(new UserDAO(entityManager), new FileManager(),
-                        new BCryptPasswordEncoder());
+                UserController userController = new UserController();
 
                 User user = userController.findHandler(id);
 
                 reviews = reviewController.listByUserHandler(10, page * 10, user);
                 break;
             case "book":
-                BookController bookController = new BookController(new BookDAO(entityManager));
+                BookController bookController = new BookController();
 
                 Book book = bookController.findHandler(id);
 

@@ -5,23 +5,15 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import javax.persistence.EntityManager;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import ifrs.edu.br.controllers.UserController;
-import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.models.User;
-import ifrs.edu.br.utils.FileManager;
 
 /**
  * Signup
  */
 public class Signup {
-    public static void command(EntityManager entityManager) {
-        FileManager fileManager = new FileManager();
-        UserDAO userDAO = new UserDAO(entityManager);
-        UserController userController = new UserController(userDAO, fileManager, new BCryptPasswordEncoder());
+    public static void command() {
+        UserController userController = new UserController();
         User user = userController.verify();
         if (user != null) {
             System.out.println("Already logged in");

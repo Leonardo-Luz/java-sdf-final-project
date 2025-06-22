@@ -16,7 +16,7 @@ public class Database {
     private static EntityManager entityManager = null;
     private static EntityManagerFactory entityManagerFactory = null;
 
-    public static void connect() {
+    public static EntityManager connect() {
         Dotenv dotenv = Dotenv.load();
 
         Map<String, Object> config = new HashMap<>();
@@ -26,6 +26,8 @@ public class Database {
 
         entityManagerFactory = Persistence.createEntityManagerFactory("PostgresSQLDefaultPU", config);
         entityManager = entityManagerFactory.createEntityManager();
+
+        return entityManager;
     }
 
     public static void close() {

@@ -15,6 +15,10 @@ public class BadgeDAO extends DAO<Badge> {
         super(Badge.class, entityManager);
     }
 
+    public BadgeDAO() {
+        super(Badge.class);
+    }
+
     public List<Badge> list(int limit, int offset) {
         TypedQuery<Badge> sql = this.entityManager.createQuery("SELECT b FROM badges b", Badge.class);
 

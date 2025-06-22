@@ -2,6 +2,8 @@ package ifrs.edu.br.dao;
 
 import javax.persistence.EntityManager;
 
+import ifrs.edu.br.Database;
+
 public abstract class DAO<T> {
     protected EntityManager entityManager;
     private Class<T> entityClass;
@@ -9,6 +11,11 @@ public abstract class DAO<T> {
     public DAO(Class<T> entityClass, EntityManager entityManager) {
         this.entityClass = entityClass;
         this.entityManager = entityManager;
+    }
+
+    public DAO(Class<T> entityClass) {
+        this.entityClass = entityClass;
+        this.entityManager = Database.getEntityManager();
     }
 
     public void insert(T object) {

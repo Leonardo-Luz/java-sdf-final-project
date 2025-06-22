@@ -38,63 +38,62 @@ public class App {
             case "-s":
             case "--signup":
                 Database.connect();
-                Signup.command(Database.getEntityManager());
+                Signup.command();
                 break;
 
             case "-l":
             case "--login":
                 Database.connect();
-                Login.command(Database.getEntityManager());
+                Login.command();
                 break;
 
             case "--logout":
-                Database.connect();
-                Logout.command(Database.getEntityManager());
+                Logout.command();
                 break;
 
             case "--add":
                 Database.connect();
-                Add.command(args, Database.getEntityManager());
+                Add.command(args);
                 break;
 
             case "--remove":
                 Database.connect();
-                Remove.command(args, Database.getEntityManager());
+                Remove.command(args);
                 break;
 
             case "-u":
             case "--update":
                 Database.connect();
-                Update.command(args, Database.getEntityManager());
+                Update.command(args);
                 break;
 
             case "-b":
             case "--books":
                 Database.connect();
-                Books.command(args, Database.getEntityManager());
+                Books.command(args);
                 break;
 
             case "-r":
             case "--reviews":
                 Database.connect();
-                Reviews.command(args, Database.getEntityManager());
+                Reviews.command(args);
                 break;
 
             case "--like":
                 Database.connect();
-                Like.command(args, Database.getEntityManager());
+                Like.command(args);
                 break;
 
             case "-p":
             case "--profile":
                 Database.connect();
-                Profile.command(args, Database.getEntityManager());
+                Profile.command(args);
                 break;
 
             case "-a":
             case "--achievements":
                 Database.connect();
-                Achievements.command(args, Database.getEntityManager());
+                Achievements.command(args);
                 break;
 
             case "-h":

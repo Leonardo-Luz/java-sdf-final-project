@@ -17,6 +17,10 @@ public class ReviewDAO extends DAO<Review> {
         super(Review.class, entityManager);
     }
 
+    public ReviewDAO() {
+        super(Review.class);
+    }
+
     public List<Review> listByBook(int limit, int offset, Book book) {
         TypedQuery<Review> sql = this.entityManager.createQuery("SELECT r FROM reviews r WHERE r.book = :book",
                 Review.class);

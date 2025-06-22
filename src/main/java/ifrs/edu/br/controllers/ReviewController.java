@@ -17,6 +17,10 @@ public class ReviewController implements Controller<Review> {
         this.reviewDAO = reviewDAO;
     }
 
+    public ReviewController() {
+        this.reviewDAO = new ReviewDAO();
+    }
+
     public List<Review> listByBookHandler(int limit, int offset, Book book) {
         try {
             if (limit < 0)
@@ -34,7 +38,7 @@ public class ReviewController implements Controller<Review> {
 
             return list;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -56,7 +60,7 @@ public class ReviewController implements Controller<Review> {
 
             return list;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -69,7 +73,7 @@ public class ReviewController implements Controller<Review> {
 
             reviewDAO.insert(object);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -86,7 +90,7 @@ public class ReviewController implements Controller<Review> {
 
             return review;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -99,7 +103,7 @@ public class ReviewController implements Controller<Review> {
 
             reviewDAO.update(object);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -111,7 +115,7 @@ public class ReviewController implements Controller<Review> {
 
             reviewDAO.delete(id);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 

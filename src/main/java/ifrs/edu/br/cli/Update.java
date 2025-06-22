@@ -5,31 +5,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import javax.persistence.EntityManager;
-
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
-import ifrs.edu.br.utils.FileManager;
 import ifrs.edu.br.models.Badge;
 import ifrs.edu.br.models.Book;
-import ifrs.edu.br.dao.ReviewDAO;
-import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.controllers.BadgeController;
 import ifrs.edu.br.controllers.BookController;
 import ifrs.edu.br.controllers.ReviewController;
 import ifrs.edu.br.controllers.UserController;
-import ifrs.edu.br.dao.BadgeDAO;
-import ifrs.edu.br.dao.BookDAO;
 
 /**
  * Update
  */
 public class Update {
     private static Scanner scanner;
-    private static EntityManager entityManager;
 
-    public static void command(String args[], EntityManager entityManager) {
-        Update.entityManager = entityManager;
+    public static void command(String args[]) {
         scanner = new Scanner(System.in);
 
         if (args.length < 2) {
@@ -150,16 +141,14 @@ public class Update {
     }
 
     private static void updateReview(int reviewId) {
-        FileManager fileManager = new FileManager();
-        UserDAO userDAO = new UserDAO(entityManager);
-        UserController userController = new UserController(userDAO, fileManager);
+        UserController userController = new UserController();
         User user = userController.verify();
         if (user == null) {
             System.out.println("You need to login before updating a review");
             return;
         }
 
-        ReviewController reviewController = new ReviewController(new ReviewDAO(entityManager));
+        ReviewController reviewController = new ReviewController();
         Review review = reviewController.findHandler(reviewId);
 
         if (!user.getRole().equals("ADMIN") && review.getUser().getId() != user.getId()) {
@@ -208,7 +197,7 @@ public class Update {
             bookId = -1;
         }
 
-        BookController bookController = new BookController(new BookDAO(entityManager));
+        BookController bookController = new BookController();
         Book book = bookController.findHandler(bookId);
 
         try {
@@ -218,7 +207,7 @@ public class Update {
             review.setReadEndDate(readEndDate);
             review.setBook(book);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
 
         reviewController.updateHandler(review);
@@ -228,9 +217,7 @@ public class Update {
     }
 
     private static void updateBook(int bookId) {
-        FileManager fileManager = new FileManager();
-        UserDAO userDAO = new UserDAO(entityManager);
-        UserController userController = new UserController(userDAO, fileManager);
+        UserController userController = new UserController();
         User user = userController.verify();
         if (user == null) {
             System.out.println("You need to be logged to update a book");
@@ -242,7 +229,7 @@ public class Update {
             return;
         }
 
-        BookController bookController = new BookController(new BookDAO(entityManager));
+        BookController bookController = new BookController();
         Book book = bookController.findHandler(bookId);
 
         if (book == null) {
@@ -283,9 +270,7 @@ public class Update {
     }
 
     private static void updateAchievement(int badgeId) {
-        FileManager fileManager = new FileManager();
-        UserDAO userDAO = new UserDAO(entityManager);
-        UserController userController = new UserController(userDAO, fileManager);
+        UserController userController = new UserController();
         User user = userController.verify();
         if (user == null) {
             System.out.println("You need to login before updating a review");
@@ -297,7 +282,7 @@ public class Update {
             return;
         }
 
-        BadgeController badgeController = new BadgeController(new BadgeDAO(entityManager));
+        BadgeController badgeController = new BadgeController();
         Badge badge = badgeController.findHandler(badgeId);
 
         System.out.println("> name");

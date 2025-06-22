@@ -15,6 +15,10 @@ public class BadgeController implements Controller<Badge> {
         this.badgeDAO = badgeDAO;
     }
 
+    public BadgeController() {
+        this.badgeDAO = new BadgeDAO();
+    }
+
     public List<Badge> listHandler(int limit, int offset) {
         try {
             if (limit < 0)
@@ -32,7 +36,7 @@ public class BadgeController implements Controller<Badge> {
 
             return list;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -45,7 +49,7 @@ public class BadgeController implements Controller<Badge> {
 
             badgeDAO.insert(object);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -62,7 +66,7 @@ public class BadgeController implements Controller<Badge> {
 
             return badge;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -75,7 +79,7 @@ public class BadgeController implements Controller<Badge> {
 
             badgeDAO.update(object);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -87,7 +91,7 @@ public class BadgeController implements Controller<Badge> {
 
             badgeDAO.delete(id);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 }

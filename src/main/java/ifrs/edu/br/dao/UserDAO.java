@@ -14,6 +14,10 @@ public class UserDAO extends DAO<User> {
         super(User.class, entityManager);
     }
 
+    public UserDAO() {
+        super(User.class);
+    }
+
     @Override
     public User find(int id) {
         User user = entityManager.find(User.class, id);

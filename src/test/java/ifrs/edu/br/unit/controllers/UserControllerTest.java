@@ -45,7 +45,7 @@ public class UserControllerTest {
 				email,
 				"Roberto",
 				"654321",
-				LocalDate.now());
+				LocalDate.of(2000, 12, 25));
 
 		when(userDAOMock.login(email, "654321")).thenReturn(target);
 		when(passwordEncoderMock.encode("123456")).thenReturn("654321");
@@ -65,7 +65,7 @@ public class UserControllerTest {
 				email,
 				"Roberto",
 				"654321",
-				LocalDate.now());
+				LocalDate.of(2000, 12, 25));
 
 		when(userDAOMock.findByEmail(email)).thenReturn(target);
 

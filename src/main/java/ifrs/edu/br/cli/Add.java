@@ -5,33 +5,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
-import javax.persistence.EntityManager;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
-import ifrs.edu.br.utils.FileManager;
 import ifrs.edu.br.models.Badge;
 import ifrs.edu.br.models.Book;
-import ifrs.edu.br.dao.ReviewDAO;
-import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.controllers.BadgeController;
 import ifrs.edu.br.controllers.BookController;
 import ifrs.edu.br.controllers.ReviewController;
 import ifrs.edu.br.controllers.UserController;
-import ifrs.edu.br.dao.BadgeDAO;
-import ifrs.edu.br.dao.BookDAO;
 
 /**
  * Add
  */
 public class Add {
     private static Scanner scanner;
-    private static EntityManager entityManager;
 
-    public static void command(String args[], EntityManager entityManager) {
-        Add.entityManager = entityManager;
+    public static void command(String args[]) {
         scanner = new Scanner(System.in);
 
         if (args.length < 2) {
@@ -103,8 +92,7 @@ public class Add {
     }
 
     private static void addReview(int bookId) {
-        User user = new UserController(new UserDAO(entityManager), new FileManager(), new BCryptPasswordEncoder())
-                .verify();
+        User user = new UserController().verify();
 
         if (user == null) {
             System.out.println("You need to login before adding a review");
@@ -159,8 +147,8 @@ public class Add {
             return;
         }
 
-        BookDAO bookDAO = new BookDAO(entityManager);
-        Book book = bookDAO.find(bookId);
+        BookController bookController = new BookController();
+        Book book = bookController.findHandler(bookId);
 
         if (book == null) {
             System.out.println("Book not found!");
@@ -169,20 +157,19 @@ public class Add {
 
         try {
             Review review = new Review(title, text, readStartDate, readEndDate, book, user);
-            ReviewController reviewController = new ReviewController(new ReviewDAO(entityManager));
+            ReviewController reviewController = new ReviewController();
 
             reviewController.insertHandler(review);
 
             System.out.println();
             System.out.println("New Review created!");
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
     private static void addBook() {
-        User user = new UserController(new UserDAO(entityManager), new FileManager(), new BCryptPasswordEncoder())
-                .verify();
+        User user = new UserController().verify();
 
         if (user == null) {
             System.out.println("You need to login before adding a book");
@@ -209,20 +196,19 @@ public class Add {
 
         try {
             Book book = new Book(title, pages, synopsis);
-            BookController bookController = new BookController(new BookDAO(entityManager));
+            BookController bookController = new BookController();
 
             bookController.insertHandler(book);
 
             System.out.println();
             System.out.println("New Book created!");
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
     private static void addAchievement() {
-        User user = new UserController(new UserDAO(entityManager), new FileManager(), new BCryptPasswordEncoder())
-                .verify();
+        User user = new UserController().verify();
 
         if (user == null) {
             System.out.println("You need to login before adding a book");
@@ -244,14 +230,14 @@ public class Add {
 
         try {
             Badge badge = new Badge(name, requirements);
-            BadgeController badgeController = new BadgeController(new BadgeDAO(entityManager));
+            BadgeController badgeController = new BadgeController();
 
             badgeController.insertHandler(badge);
 
             System.out.println();
             System.out.println("New Achievement created!");
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 }

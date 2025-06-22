@@ -2,31 +2,20 @@ package ifrs.edu.br.cli;
 
 import java.util.Scanner;
 
-import javax.persistence.EntityManager;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
-import ifrs.edu.br.utils.FileManager;
-import ifrs.edu.br.dao.ReviewDAO;
-import ifrs.edu.br.dao.UserDAO;
 import ifrs.edu.br.controllers.BadgeController;
 import ifrs.edu.br.controllers.BookController;
 import ifrs.edu.br.controllers.ReviewController;
 import ifrs.edu.br.controllers.UserController;
-import ifrs.edu.br.dao.BadgeDAO;
-import ifrs.edu.br.dao.BookDAO;
 
 /**
  * Remove
  */
 public class Remove {
     private static Scanner scanner;
-    private static EntityManager entityManager;
 
-    public static void command(String args[], EntityManager entityManager) {
-        Remove.entityManager = entityManager;
+    public static void command(String args[]) {
         scanner = new Scanner(System.in);
 
         if (args.length < 2) {
@@ -178,16 +167,14 @@ public class Remove {
     }
 
     private static void removeReview(int reviewId) {
-        FileManager fileManager = new FileManager();
-        UserDAO userDAO = new UserDAO(entityManager);
-        UserController userController = new UserController(userDAO, fileManager, new BCryptPasswordEncoder());
+        UserController userController = new UserController();
         User user = userController.verify();
         if (user == null) {
             System.out.println("You need to login before removing a review");
             return;
         }
 
-        ReviewController reviewController = new ReviewController(new ReviewDAO(entityManager));
+        ReviewController reviewController = new ReviewController();
 
         Review review = reviewController.findHandler(reviewId);
 
@@ -203,9 +190,7 @@ public class Remove {
     }
 
     private static void removeBook(int bookId) {
-        FileManager fileManager = new FileManager();
-        UserDAO userDAO = new UserDAO(entityManager);
-        UserController userController = new UserController(userDAO, fileManager, new BCryptPasswordEncoder());
+        UserController userController = new UserController();
         User user = userController.verify();
         if (user == null) {
             System.out.println("You need to be logged to remove a book");
@@ -217,7 +202,7 @@ public class Remove {
             return;
         }
 
-        BookController bookController = new BookController(new BookDAO(entityManager));
+        BookController bookController = new BookController();
 
         bookController.findHandler(bookId);
         bookController.deleteHandler(bookId);
@@ -227,9 +212,7 @@ public class Remove {
     }
 
     private static void removeAchievement(int achievementId) {
-        FileManager fileManager = new FileManager();
-        UserDAO userDAO = new UserDAO(entityManager);
-        UserController userController = new UserController(userDAO, fileManager, new BCryptPasswordEncoder());
+        UserController userController = new UserController();
         User user = userController.verify();
         if (user == null) {
             System.out.println("You need to login before removing a achievement");
@@ -241,7 +224,7 @@ public class Remove {
             return;
         }
 
-        BadgeController badgeController = new BadgeController(new BadgeDAO(entityManager));
+        BadgeController badgeController = new BadgeController();
 
         badgeController.findHandler(achievementId);
         badgeController.deleteHandler(achievementId);
@@ -251,9 +234,7 @@ public class Remove {
     }
 
     private static void removeAccount(Integer userId) {
-        FileManager fileManager = new FileManager();
-        UserDAO userDAO = new UserDAO(entityManager);
-        UserController userController = new UserController(userDAO, fileManager, new BCryptPasswordEncoder());
+        UserController userController = new UserController();
         User user = userController.verify();
 
         if (user == null) {

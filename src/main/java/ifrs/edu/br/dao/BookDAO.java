@@ -15,6 +15,10 @@ public class BookDAO extends DAO<Book> {
         super(Book.class, entityManager);
     }
 
+    public BookDAO() {
+        super(Book.class);
+    }
+
     public List<Book> list(int limit, int offset) {
         TypedQuery<Book> sql = this.entityManager.createQuery("SELECT b FROM books b", Book.class);
 

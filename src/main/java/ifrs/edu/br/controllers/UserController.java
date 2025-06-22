@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import ifrs.edu.br.dao.UserDAO;
@@ -25,6 +27,18 @@ public class UserController implements Controller<User> {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public UserController(EntityManager entityManager) {
+        this.fileManager = new FileManager();
+        this.userDAO = new UserDAO(entityManager);
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
+    public UserController() {
+        this.fileManager = new FileManager();
+        this.userDAO = new UserDAO();
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
     public User findByEmailHandler(String email) {
         try {
             Validation.emailValidation(email);
@@ -36,7 +50,7 @@ public class UserController implements Controller<User> {
 
             return user;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -62,7 +76,7 @@ public class UserController implements Controller<User> {
 
             return user;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -84,7 +98,7 @@ public class UserController implements Controller<User> {
 
             this.fileManager.create(fileData);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -92,7 +106,7 @@ public class UserController implements Controller<User> {
         try {
             this.fileManager.delete();
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -116,10 +130,10 @@ public class UserController implements Controller<User> {
 
             return user;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         } catch (FileNotFoundException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -132,7 +146,7 @@ public class UserController implements Controller<User> {
 
             userDAO.insert(object);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -149,7 +163,7 @@ public class UserController implements Controller<User> {
 
             return user;
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
             return null;
         }
     }
@@ -159,7 +173,7 @@ public class UserController implements Controller<User> {
         try {
             userDAO.update(object);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 
@@ -171,7 +185,7 @@ public class UserController implements Controller<User> {
 
             userDAO.delete(id);
         } catch (RuntimeException err) {
-            System.out.println(err);
+            System.out.println(err.getMessage());
         }
     }
 }

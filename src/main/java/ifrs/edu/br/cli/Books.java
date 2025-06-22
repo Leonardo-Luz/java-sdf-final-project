@@ -2,21 +2,14 @@ package ifrs.edu.br.cli;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-
 import ifrs.edu.br.controllers.BookController;
-import ifrs.edu.br.dao.BookDAO;
 import ifrs.edu.br.models.Book;
 
 /**
  * Books
  */
 public class Books {
-    private static EntityManager entityManager;
-
-    public static void command(String args[], EntityManager entityManager) {
-        Books.entityManager = entityManager;
-
+    public static void command(String args[]) {
         int page = 0;
 
         for (int i = 1; i < args.length; i++) {
@@ -39,7 +32,7 @@ public class Books {
     }
 
     private static void logic(int page) {
-        BookController bookController = new BookController(new BookDAO(entityManager));
+        BookController bookController = new BookController();
 
         List<Book> books = bookController.listHandler(10, page * 10);
 
