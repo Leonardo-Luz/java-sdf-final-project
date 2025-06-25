@@ -1,6 +1,5 @@
 package ifrs.edu.br.controllers;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,9 +129,6 @@ public class UserController implements Controller<User> {
 
             return user;
         } catch (RuntimeException err) {
-            System.out.println(err.getMessage());
-            return null;
-        } catch (FileNotFoundException err) {
             System.out.println(err.getMessage());
             return null;
         }

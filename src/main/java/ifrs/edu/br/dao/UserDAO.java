@@ -21,7 +21,8 @@ public class UserDAO extends DAO<User> {
     @Override
     public User find(int id) {
         User user = entityManager.find(User.class, id);
-        user.setAge();
+        if (user != null)
+            user.setAge();
 
         return user;
     }
@@ -57,5 +58,12 @@ public class UserDAO extends DAO<User> {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    @Override
+    public void clear() {
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("DELETE FROM users").executeUpdate();
+        entityManager.getTransaction().commit();
     }
 }

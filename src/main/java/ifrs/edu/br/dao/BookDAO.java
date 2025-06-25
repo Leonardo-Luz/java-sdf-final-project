@@ -24,4 +24,11 @@ public class BookDAO extends DAO<Book> {
 
         return sql.setFirstResult(offset).setMaxResults(limit).getResultList();
     }
+
+    @Override
+    public void clear() {
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("DELETE FROM books").executeUpdate();
+        entityManager.getTransaction().commit();
+    }
 }

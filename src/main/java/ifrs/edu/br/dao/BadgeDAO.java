@@ -24,4 +24,11 @@ public class BadgeDAO extends DAO<Badge> {
 
         return sql.setFirstResult(offset).setMaxResults(limit).getResultList();
     }
+
+    @Override
+    public void clear() {
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("DELETE FROM badges").executeUpdate();
+        entityManager.getTransaction().commit();
+    }
 }

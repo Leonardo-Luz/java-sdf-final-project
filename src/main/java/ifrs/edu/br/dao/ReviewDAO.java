@@ -38,4 +38,11 @@ public class ReviewDAO extends DAO<Review> {
 
         return sql.setFirstResult(offset).setMaxResults(limit).getResultList();
     }
+
+    @Override
+    public void clear() {
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("DELETE FROM reviews").executeUpdate();
+        entityManager.getTransaction().commit();
+    }
 }

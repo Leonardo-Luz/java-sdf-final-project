@@ -173,8 +173,25 @@ public class User {
                                 "\tid: " + this.id + "\n" +
                                 "\temail: " + this.email + "\n" +
                                 "\tname: " + this.name + "\n" +
-                                "\tpassword: " + ("*").repeat(this.password.length() / 3) + "\n" +
+                                // "\tpassword: " + ("*").repeat(this.password.length() / 3) + "\n" +
+                                "\tpassword: " + this.password + "\n" +
                                 "\trole: " + this.role + "\n" +
                                 "\tage: " + this.age + " years old\n";
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+                if (this == obj)
+                        return true;
+                if (obj == null || getClass() != obj.getClass())
+                        return false;
+
+                User user = (User) obj;
+                return id == user.id &&
+                                age == user.age &&
+                                email.equals(user.email) &&
+                                name.equals(user.name) &&
+                                password.equals(user.password) &&
+                                role == user.role;
         }
 }

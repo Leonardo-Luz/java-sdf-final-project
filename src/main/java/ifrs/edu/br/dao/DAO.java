@@ -39,4 +39,6 @@ public abstract class DAO<T> {
         entityManager.remove(entityManager.getReference(entityClass, id));
         entityManager.getTransaction().commit();
     }
+
+    public abstract void clear();
 }

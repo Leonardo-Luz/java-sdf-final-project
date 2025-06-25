@@ -23,14 +23,20 @@ public class FileManager {
         }
     }
 
-    public List<String> get() throws FileNotFoundException {
+    public List<String> get() {
         ArrayList<String> fileData = new ArrayList<>();
 
         File file = new File(AUTH_PATH);
         if (!file.exists())
             return null;
 
-        Scanner scanner = new Scanner(file);
+        Scanner scanner;
+
+        try {
+            scanner = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found");
+        }
 
         while (scanner.hasNextLine()) {
             String line = scanner.nextLine().trim();

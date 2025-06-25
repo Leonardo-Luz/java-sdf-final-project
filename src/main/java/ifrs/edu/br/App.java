@@ -37,13 +37,13 @@ public class App {
         switch (command) {
             case "-s":
             case "--signup":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Signup.command();
                 break;
 
             case "-l":
             case "--login":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Login.command();
                 break;
 
@@ -52,47 +52,47 @@ public class App {
                 break;
 
             case "--add":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Add.command(args);
                 break;
 
             case "--remove":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Remove.command(args);
                 break;
 
             case "-u":
             case "--update":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Update.command(args);
                 break;
 
             case "-b":
             case "--books":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Books.command(args);
                 break;
 
             case "-r":
             case "--reviews":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Reviews.command(args);
                 break;
 
             case "--like":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Like.command(args);
                 break;
 
             case "-p":
             case "--profile":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Profile.command(args);
                 break;
 
             case "-a":
             case "--achievements":
-                Database.connect();
+                Database.connect(DatabaseEnum.DEVELOPMENT);
                 Achievements.command(args);
                 break;
 

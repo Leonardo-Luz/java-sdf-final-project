@@ -16,13 +16,35 @@ public class Database {
     private static EntityManager entityManager = null;
     private static EntityManagerFactory entityManagerFactory = null;
 
-    public static EntityManager connect() {
+    public static EntityManager connect(DatabaseEnum databaseEnum) {
         Dotenv dotenv = Dotenv.load();
 
+        String url = "";
+        String user = "";
+        String password = "";
+
+        switch (databaseEnum) {
+            case PRODUCTION:
+                url = dotenv.get("PRODUCTION_POSTGRES_DATABASE_URL");
+                user = dotenv.get("PRODUCTION_POSTGRES_DATABASE_USER");
+                password = dotenv.get("PRODUCTION_POSTGRES_DATABASE_PASSWORD");
+                break;
+            case DEVELOPMENT:
+                url = dotenv.get("DEVELOPMENT_POSTGRES_DATABASE_URL");
+                user = dotenv.get("DEVELOPMENT_POSTGRES_DATABASE_USER");
+                password = dotenv.get("DEVELOPMENT_POSTGRES_DATABASE_PASSWORD");
+                break;
+            case TEST:
+                url = dotenv.get("TEST_POSTGRES_DATABASE_URL");
+                user = dotenv.get("TEST_POSTGRES_DATABASE_USER");
+                password = dotenv.get("TEST_POSTGRES_DATABASE_PASSWORD");
+                break;
+        }
+
         Map<String, Object> config = new HashMap<>();
-        config.put("javax.persistence.jdbc.url", dotenv.get("POSTGRES_DATABASE_JDBC"));
-        config.put("javax.persistence.jdbc.user", dotenv.get("POSTGRES_DATABASE_USER"));
-        config.put("javax.persistence.jdbc.password", dotenv.get("POSTGRES_DATABASE_PASSWORD"));
+        config.put("javax.persistence.jdbc.url", url);
+        config.put("javax.persistence.jdbc.user", user);
+        config.put("javax.persistence.jdbc.password", password);
 
         entityManagerFactory = Persistence.createEntityManagerFactory("PostgresSQLDefaultPU", config);
         entityManager = entityManagerFactory.createEntityManager();
