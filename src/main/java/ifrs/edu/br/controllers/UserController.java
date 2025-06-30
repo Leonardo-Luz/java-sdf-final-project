@@ -61,11 +61,11 @@ public class UserController implements Controller<User> {
 
             Validation.emailValidation(email);
 
-            String hashedPassword = passwordEncoder.encode(password);
-            User user = userDAO.login(email, hashedPassword);
+            User user = userDAO.findByEmail(email);
 
-            if (user == null)
+            if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
                 throw new RuntimeException("Error: Password or Email invalid");
+            }
 
             ArrayList<String> fileData = new ArrayList<>();
             fileData.add(user.getEmail());
@@ -73,6 +73,7 @@ public class UserController implements Controller<User> {
 
             fileManager.create(fileData);
 
+            System.out.println("Login successful");
             return user;
         } catch (RuntimeException err) {
             System.out.println(err.getMessage());

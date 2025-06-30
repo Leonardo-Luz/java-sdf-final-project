@@ -35,10 +35,6 @@ public class ReviewDAOTest {
 		bookDAO = new BookDAO(entityManager);
 		reviewDAO = new ReviewDAO(entityManager);
 
-		reviewDAO.clear();
-		userDAO.clear();
-		bookDAO.clear();
-
 		testUser = new User("testuser@test.com", "test user", "test password", LocalDate.of(1990, 1, 1));
 		userDAO.insert(testUser);
 
@@ -52,9 +48,7 @@ public class ReviewDAOTest {
 		userDAO.clear();
 		bookDAO.clear();
 
-		if (entityManager.isOpen()) {
-			entityManager.close();
-		}
+		Database.close();
 	}
 
 	@Test

@@ -23,6 +23,8 @@ public class Database {
         String user = "";
         String password = "";
 
+        Map<String, Object> config = new HashMap<>();
+
         switch (databaseEnum) {
             case PRODUCTION:
                 url = dotenv.get("PRODUCTION_POSTGRES_DATABASE_URL");
@@ -38,10 +40,10 @@ public class Database {
                 url = dotenv.get("TEST_POSTGRES_DATABASE_URL");
                 user = dotenv.get("TEST_POSTGRES_DATABASE_USER");
                 password = dotenv.get("TEST_POSTGRES_DATABASE_PASSWORD");
+                config.put("hibernate.hbm2ddl.auto", "create-drop");
                 break;
         }
 
-        Map<String, Object> config = new HashMap<>();
         config.put("javax.persistence.jdbc.url", url);
         config.put("javax.persistence.jdbc.user", user);
         config.put("javax.persistence.jdbc.password", password);

@@ -21,15 +21,13 @@ public class BookDAOTest {
 		Database.connect(DatabaseEnum.TEST);
 		entityManager = Database.getEntityManager();
 		bookDAO = new BookDAO(entityManager);
-		bookDAO.clear();
 	}
 
 	@AfterEach
 	void tearDown() {
 		bookDAO.clear();
-		if (entityManager.isOpen()) {
-			entityManager.close();
-		}
+
+		Database.close();
 	}
 
 	@Test

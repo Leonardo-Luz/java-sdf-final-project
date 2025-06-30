@@ -2,6 +2,7 @@ package ifrs.edu.br.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,7 +25,7 @@ public class Book {
         @Column(length = 400, nullable = true)
         private String synopsis;
 
-        @OneToMany(mappedBy = "book")
+        @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
         private List<Review> reviews;
 
         public Book(int id, String title, int pages, String synopsis) {

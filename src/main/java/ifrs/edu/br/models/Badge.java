@@ -2,6 +2,7 @@ package ifrs.edu.br.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class Badge {
         @Column(length = 300, nullable = false)
         private String requirements;
 
-        @ManyToMany
+        @ManyToMany(cascade = CascadeType.REMOVE)
         @JoinTable(name = "badge_user", joinColumns = @JoinColumn(name = "badge_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
         private List<User> users;
 

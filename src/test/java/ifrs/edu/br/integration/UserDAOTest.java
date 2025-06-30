@@ -22,15 +22,12 @@ public class UserDAOTest {
 		Database.connect(DatabaseEnum.TEST);
 		entityManager = Database.getEntityManager();
 		userDAO = new UserDAO(entityManager);
-		userDAO.clear();
 	}
 
 	@AfterEach
 	void after() {
 		userDAO.clear();
-		if (entityManager.isOpen()) {
-			entityManager.close();
-		}
+		Database.close();
 	}
 
 	@Test

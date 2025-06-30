@@ -48,12 +48,13 @@ public class UserControllerTest {
 				"654321",
 				LocalDate.of(2000, 12, 25));
 
-		when(userDAOMock.login(email, "654321")).thenReturn(target);
+		when(userDAOMock.findByEmail(email)).thenReturn(target);
 		when(passwordEncoderMock.encode("123456")).thenReturn("654321");
+		when(passwordEncoderMock.matches("123456", "654321")).thenReturn(true);
 
 		User response = userController.loginHandler(email, "123456");
 
-		verify(userDAOMock, times(1)).login(email, "654321");
+		verify(userDAOMock, times(1)).findByEmail(email);
 		assertEquals(target, response);
 	}
 

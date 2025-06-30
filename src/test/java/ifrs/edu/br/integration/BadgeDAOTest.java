@@ -21,15 +21,12 @@ public class BadgeDAOTest {
 		Database.connect(DatabaseEnum.TEST);
 		entityManager = Database.getEntityManager();
 		badgeDAO = new BadgeDAO(entityManager);
-		badgeDAO.clear();
 	}
 
 	@AfterEach
 	void after() {
 		badgeDAO.clear();
-		if (entityManager.isOpen()) {
-			entityManager.close();
-		}
+		Database.close();
 	}
 
 	@Test

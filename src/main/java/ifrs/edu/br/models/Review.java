@@ -39,7 +39,7 @@ public class Review {
         @JoinColumn(name = "user_id")
         private User user;
 
-        @ManyToMany
+        @ManyToMany(cascade = CascadeType.REMOVE)
         @JoinTable(name = "likes", joinColumns = @JoinColumn(name = "review_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
         private List<User> likes;
 
@@ -96,10 +96,10 @@ public class Review {
         }
 
         public void setReadStartDate(LocalDate readStartDate) {
-                if(readStartDate.toEpochDay() > LocalDate.now().toEpochDay())
+                if (readStartDate.toEpochDay() > LocalDate.now().toEpochDay())
                         throw new RuntimeException("Read start date can't be in the future!");
 
-                if(readEndDate != null && readStartDate.toEpochDay() > readEndDate.toEpochDay())
+                if (readEndDate != null && readStartDate.toEpochDay() > readEndDate.toEpochDay())
                         throw new RuntimeException("Read start date can't be after read end date!");
 
                 this.readStartDate = readStartDate;
@@ -110,10 +110,10 @@ public class Review {
         }
 
         public void setReadEndDate(LocalDate readEndDate) {
-                if(readEndDate.toEpochDay() > LocalDate.now().toEpochDay())
+                if (readEndDate.toEpochDay() > LocalDate.now().toEpochDay())
                         throw new RuntimeException("Read end date can't be in the future!");
 
-                if(readStartDate != null && readEndDate.toEpochDay() < readStartDate.toEpochDay())
+                if (readStartDate != null && readEndDate.toEpochDay() < readStartDate.toEpochDay())
                         throw new RuntimeException("Read end date can't be before read start date!");
 
                 this.readEndDate = readEndDate;

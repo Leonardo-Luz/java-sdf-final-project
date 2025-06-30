@@ -45,10 +45,10 @@ public class Profile {
 
         User user = userController.findHandler(id);
 
-        String emailStart = user.getEmail().substring(0, user.getEmail().length() / 5);
-        String emailEnd = user.getEmail().substring(user.getEmail().length() - user.getEmail().length() / 5);
+        String emailStart = "removed";
+        String emailEnd = "email.com";
 
-        user.setEmail(emailStart + "..." + emailEnd);
+        user.setEmail(emailStart + "@" + emailEnd);
 
         System.out.println(user);
     }

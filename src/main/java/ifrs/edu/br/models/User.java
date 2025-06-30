@@ -3,6 +3,7 @@ package ifrs.edu.br.models;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,13 +35,13 @@ public class User {
         @Transient
         private int age;
 
-        @ManyToMany(mappedBy = "users")
+        @ManyToMany(mappedBy = "users", cascade = CascadeType.REMOVE)
         private List<Badge> badges;
 
-        @OneToMany(mappedBy = "user")
+        @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
         private List<Review> reviews;
 
-        @ManyToMany(mappedBy = "likes")
+        @ManyToMany(mappedBy = "likes", cascade = CascadeType.REMOVE)
         private List<Review> likes;
 
         public User(int id, String email, String name, String password, LocalDate birthday) {
@@ -173,8 +174,7 @@ public class User {
                                 "\tid: " + this.id + "\n" +
                                 "\temail: " + this.email + "\n" +
                                 "\tname: " + this.name + "\n" +
-                                // "\tpassword: " + ("*").repeat(this.password.length() / 3) + "\n" +
-                                "\tpassword: " + this.password + "\n" +
+                                "\tpassword: " + ("*").repeat(this.password.length() / 3) + "\n" +
                                 "\trole: " + this.role + "\n" +
                                 "\tage: " + this.age + " years old\n";
         }
