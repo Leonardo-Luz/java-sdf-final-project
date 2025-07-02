@@ -45,6 +45,8 @@ public class Profile {
 
         User user = userController.findHandler(id);
 
+        if (user == null) return;
+
         String emailStart = "removed";
         String emailEnd = "email.com";
 

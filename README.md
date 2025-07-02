@@ -3,6 +3,12 @@
 * Alunos: Leonardo Luz & Diego Prestes
 * 5º Semestre ADS
 
+## Descrição
+
+* **CLI** para rede social focada em livros, permitindo adicionar e curtir reviews.
+* Posui autenticação.
+* Administradores podem adicionar novos livros e badges.
+
 ## Dependencies
 
 * maven

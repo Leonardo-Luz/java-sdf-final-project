@@ -151,7 +151,6 @@ public class Add {
         Book book = bookController.findHandler(bookId);
 
         if (book == null) {
-            System.out.println("Book not found!");
             return;
         }
 

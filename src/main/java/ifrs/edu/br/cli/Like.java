@@ -36,6 +36,9 @@ public class Like {
         ReviewController reviewController = new ReviewController();
         Review review = reviewController.findHandler(id);
 
+        if (review == null)
+            return;
+
         try {
             review.addLike(user);
             reviewController.updateHandler(review);

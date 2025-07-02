@@ -30,23 +30,28 @@ public class Database {
                 url = dotenv.get("PRODUCTION_POSTGRES_DATABASE_URL");
                 user = dotenv.get("PRODUCTION_POSTGRES_DATABASE_USER");
                 password = dotenv.get("PRODUCTION_POSTGRES_DATABASE_PASSWORD");
+                config.put("hibernate.hbm2ddl.auto", "update");
                 break;
             case DEVELOPMENT:
                 url = dotenv.get("DEVELOPMENT_POSTGRES_DATABASE_URL");
                 user = dotenv.get("DEVELOPMENT_POSTGRES_DATABASE_USER");
                 password = dotenv.get("DEVELOPMENT_POSTGRES_DATABASE_PASSWORD");
+                config.put("hibernate.hbm2ddl.auto", "update");
                 break;
             case TEST:
                 url = dotenv.get("TEST_POSTGRES_DATABASE_URL");
                 user = dotenv.get("TEST_POSTGRES_DATABASE_USER");
                 password = dotenv.get("TEST_POSTGRES_DATABASE_PASSWORD");
                 config.put("hibernate.hbm2ddl.auto", "create-drop");
+                config.put("hibernate.show_sql", "true");
+                config.put("hibernate.format_sql", "true");
                 break;
         }
 
         config.put("javax.persistence.jdbc.url", url);
         config.put("javax.persistence.jdbc.user", user);
         config.put("javax.persistence.jdbc.password", password);
+        config.put("javax.persistence.jdbc.driver", "org.postgresql.Driver");
 
         entityManagerFactory = Persistence.createEntityManagerFactory("PostgresSQLDefaultPU", config);
         entityManager = entityManagerFactory.createEntityManager();

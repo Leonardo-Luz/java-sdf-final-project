@@ -94,6 +94,14 @@ public class Book {
                 this.synopsis = synopsis;
         }
 
+        public List<Review> getReviews() {
+                return reviews;
+        }
+
+        public void setReviews(List<Review> reviews) {
+                this.reviews = reviews;
+        }
+
         @Override
         public String toString() {
                 String croppedSynopsis = this.synopsis.length() > 40 ? (this.synopsis.substring(0, 40) + "...")
@@ -104,6 +112,6 @@ public class Book {
                                 "\ttitle: " + this.title + "\n" +
                                 "\tpages: " + this.pages + "\n" +
                                 "\tsynopsis: " + croppedSynopsis + "\n" +
-                                "\treviews: " + reviews.size();
+                                "\treviews: " + (reviews != null ? reviews.size() : 0);
         }
 }

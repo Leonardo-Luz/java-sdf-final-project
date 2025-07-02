@@ -10,7 +10,7 @@ import ifrs.edu.br.models.Book;
  */
 public class Books {
     public static void command(String args[]) {
-        int page = 0;
+        int page = 1;
 
         for (int i = 1; i < args.length; i++) {
             if (args[i].startsWith("--page=")) {
@@ -21,9 +21,11 @@ public class Books {
                         throw new NumberFormatException();
                 } catch (NumberFormatException e) {
                     System.out.println("Error: Invalid page number. Must be a higher than ZERO.");
+                    return;
                 }
             } else {
                 System.out.println("Warning: Unrecognized option '" + args[i] + "'");
+                return;
             }
         }
 

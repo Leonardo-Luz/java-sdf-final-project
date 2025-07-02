@@ -2,6 +2,8 @@ package ifrs.edu.br.cli;
 
 import java.util.Scanner;
 
+import ifrs.edu.br.models.Badge;
+import ifrs.edu.br.models.Book;
 import ifrs.edu.br.models.Review;
 import ifrs.edu.br.models.User;
 import ifrs.edu.br.controllers.BadgeController;
@@ -177,6 +179,8 @@ public class Remove {
         ReviewController reviewController = new ReviewController();
 
         Review review = reviewController.findHandler(reviewId);
+        if (review == null)
+            return;
 
         if (user.getRole() != "ADMIN" && review.getUser().getId() != user.getId()) {
             System.out.println("Only ADMINS can delete non-owned reviews.");
@@ -204,7 +208,11 @@ public class Remove {
 
         BookController bookController = new BookController();
 
-        bookController.findHandler(bookId);
+        Book book = bookController.findHandler(bookId);
+
+        if (book == null)
+            return;
+
         bookController.deleteHandler(bookId);
 
         System.out.println();
@@ -226,7 +234,10 @@ public class Remove {
 
         BadgeController badgeController = new BadgeController();
 
-        badgeController.findHandler(achievementId);
+        Badge badge = badgeController.findHandler(achievementId);
+        if (badge == null)
+            return;
+
         badgeController.deleteHandler(achievementId);
 
         System.out.println();
@@ -245,9 +256,11 @@ public class Remove {
         if (userId != null && !user.getRole().equals("ADMIN")) {
             System.out.println("You need to be an ADMIN to remove a user by ID");
             return;
-        } else if (userId != null && user.getRole().equals("ADMIN"))
+        } else if (userId != null && user.getRole().equals("ADMIN")) {
             user = userController.findHandler(userId);
-        else if (userId == null)
+            if (user == null)
+                return;
+        } else if (userId == null)
             userController.logout();
 
         userController.deleteHandler(userId != null ? userId : user.getId());

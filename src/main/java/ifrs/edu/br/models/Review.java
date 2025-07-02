@@ -156,6 +156,14 @@ public class Review {
                 likes.add(user);
         }
 
+        public List<User> getLikes() {
+                return likes;
+        }
+
+        public void setLikes(List<User> likes) {
+                this.likes = likes;
+        }
+
         public long readTime() {
                 if (this.readEndDate == null)
                         throw new RuntimeException("Error: Read end date can't be null");

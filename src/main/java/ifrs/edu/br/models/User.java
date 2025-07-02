@@ -160,6 +160,10 @@ public class User {
                 this.likes = likes;
         }
 
+        public void setAge(int age) {
+                this.age = age;
+        }
+
         public int getAge() {
                 return age;
         }
@@ -176,9 +180,16 @@ public class User {
                                 : "NONE";
         }
 
+        public int reviewsQty(){
+                return likes != null ? reviews.size() : 0;
+        }
+
+        public int likesQty(){
+                return likes != null ? likes.size() : 0;
+        }
+
         @Override
         public String toString() {
-
                 return "User: \n" +
                                 "\tid: " + this.id + "\n" +
                                 "\temail: " + this.email + "\n" +
@@ -186,6 +197,8 @@ public class User {
                                 "\tpassword: " + ("*").repeat(this.password.length() / 3) + "\n" +
                                 "\trole: " + this.role + "\n" +
                                 "\tage: " + this.age + " years old\n" +
+                                "\treviews: " + reviewsQty() + "\n" +
+                                "\tlikes: " + likesQty() + "\n" +
                                 "\tbadges: " + getFormatedBadges() + "\n";
         }
 

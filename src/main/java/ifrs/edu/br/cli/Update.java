@@ -151,6 +151,9 @@ public class Update {
         ReviewController reviewController = new ReviewController();
         Review review = reviewController.findHandler(reviewId);
 
+        if (review == null)
+            return;
+
         if (!user.getRole().equals("ADMIN") && review.getUser().getId() != user.getId()) {
             System.out.println("Only ADMINS can update non-owned reviews.");
             return;
@@ -199,6 +202,8 @@ public class Update {
 
         BookController bookController = new BookController();
         Book book = bookController.findHandler(bookId);
+        if (book == null)
+            return;
 
         try {
             review.setTitle(title);
@@ -284,6 +289,8 @@ public class Update {
 
         BadgeController badgeController = new BadgeController();
         Badge badge = badgeController.findHandler(badgeId);
+        if (badge == null)
+            return;
 
         System.out.println("> name");
         System.out.print("> ");
