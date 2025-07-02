@@ -57,11 +57,11 @@ public class Signup {
 
         try {
             user = new User(email, name, password, birthday);
+            userController.signup(user);
         } catch (RuntimeException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
-        userController.signup(user);
         scanner.close();
     }
 }

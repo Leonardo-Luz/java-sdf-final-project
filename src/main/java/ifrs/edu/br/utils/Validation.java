@@ -5,9 +5,8 @@ package ifrs.edu.br.utils;
  */
 public class Validation {
 
-    public static void emailValidation(String email) throws RuntimeException {
+    public static boolean emailValidation(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        if (!email.matches(emailRegex))
-            throw new RuntimeException("Invalid email format.");
+        return email.matches(emailRegex);
     }
 }

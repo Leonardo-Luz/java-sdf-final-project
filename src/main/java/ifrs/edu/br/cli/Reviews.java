@@ -88,9 +88,7 @@ public class Reviews {
                 break;
         }
 
-        if (reviews == null) {
-            System.out.println("Error: context not found");
-        }
+        if (reviews == null) return;
 
         System.out.println();
         reviews.forEach((review) -> {

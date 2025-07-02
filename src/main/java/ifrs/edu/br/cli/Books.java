@@ -20,15 +20,15 @@ public class Books {
                     if (page < 1)
                         throw new NumberFormatException();
                 } catch (NumberFormatException e) {
-                    System.out.println("Error: Invalid page number. Must be a positive integer.");
+                    System.out.println("Error: Invalid page number. Must be a higher than ZERO.");
                 }
             } else {
                 System.out.println("Warning: Unrecognized option '" + args[i] + "'");
             }
         }
 
-        System.out.println("Showing books from page " + (page + 1));
-        logic(page);
+        System.out.println("Showing books from page " + page);
+        logic(page - 1);
     }
 
     private static void logic(int page) {
@@ -36,7 +36,10 @@ public class Books {
 
         List<Book> books = bookController.listHandler(10, page * 10);
 
+        if(books == null) return;
+
         System.out.println();
+
         books.forEach((book) -> {
             System.out.println(book);
             System.out.println();

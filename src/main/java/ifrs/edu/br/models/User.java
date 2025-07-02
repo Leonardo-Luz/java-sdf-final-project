@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import ifrs.edu.br.utils.Validation;
+
 /**
  * User
  */
@@ -26,7 +28,6 @@ public class User {
         private String name;
         @Column(length = 200, nullable = false)
         private String password;
-        // TODO: Change role to ENUM
         @Column(length = 20, nullable = false)
         private String role;
         @Column(nullable = true)
@@ -82,8 +83,8 @@ public class User {
                 if (name.isBlank())
                         throw new RuntimeException("Name can't be blank");
 
-                if (name.length() < 6)
-                        throw new RuntimeException("Name length can't be lower than 6");
+                if (name.length() < 4)
+                        throw new RuntimeException("Name length can't be lower than 4");
 
                 this.name = name;
         }
@@ -96,8 +97,8 @@ public class User {
                 if (password.isBlank())
                         throw new RuntimeException("Password can't be blank");
 
-                if (password.length() < 6)
-                        throw new RuntimeException("Password length can't be lower than 6");
+                if (password.length() < 4)
+                        throw new RuntimeException("Password length can't be lower than 4");
 
                 this.password = password;
         }
@@ -118,8 +119,7 @@ public class User {
         }
 
         public void setEmail(String email) {
-                String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-                if (!email.matches(emailRegex))
+                if (!Validation.emailValidation(email))
                         throw new RuntimeException("Invalid email format.");
 
                 this.email = email;
@@ -168,15 +168,25 @@ public class User {
                 this.age = (int) ((LocalDate.now().toEpochDay() - birthday.toEpochDay()) / 365);
         }
 
+        public String getFormatedBadges() {
+                return (this.badges != null && this.badges.size() > 0) ? String.join("", this.badges
+                                .stream()
+                                .map(badge -> "\n\t" + badge.toString())
+                                .toArray(String[]::new))
+                                : "NONE";
+        }
+
         @Override
         public String toString() {
+
                 return "User: \n" +
                                 "\tid: " + this.id + "\n" +
                                 "\temail: " + this.email + "\n" +
                                 "\tname: " + this.name + "\n" +
                                 "\tpassword: " + ("*").repeat(this.password.length() / 3) + "\n" +
                                 "\trole: " + this.role + "\n" +
-                                "\tage: " + this.age + " years old\n";
+                                "\tage: " + this.age + " years old\n" +
+                                "\tbadges: " + getFormatedBadges() + "\n";
         }
 
         @Override

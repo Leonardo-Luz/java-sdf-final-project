@@ -26,7 +26,6 @@ public class BookDAOTest {
 	@AfterEach
 	void tearDown() {
 		bookDAO.clear();
-
 		Database.close();
 	}
 

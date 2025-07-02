@@ -40,7 +40,8 @@ public class UserController implements Controller<User> {
 
     public User findByEmailHandler(String email) {
         try {
-            Validation.emailValidation(email);
+            if (!Validation.emailValidation(email))
+                throw new RuntimeException("Invalid email format.");
 
             User user = this.userDAO.findByEmail(email);
 
@@ -59,7 +60,8 @@ public class UserController implements Controller<User> {
             if (this.fileManager.exists())
                 throw new RuntimeException("Already logged in.");
 
-            Validation.emailValidation(email);
+            if (!Validation.emailValidation(email))
+                throw new RuntimeException("Invalid email format.");
 
             User user = userDAO.findByEmail(email);
 

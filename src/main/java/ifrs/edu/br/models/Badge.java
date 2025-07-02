@@ -1,5 +1,6 @@
 package ifrs.edu.br.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -35,11 +36,13 @@ public class Badge {
                 setId(id);
                 setName(name);
                 setRequirements(requirements);
+                this.users = new ArrayList<>();
         }
 
         public Badge(String name, String requirements) {
                 setName(name);
                 setRequirements(requirements);
+                this.users = new ArrayList<>();
         }
 
         public Badge() {
@@ -84,11 +87,29 @@ public class Badge {
                 this.requirements = requirements;
         }
 
+        public List<User> getUsers() {
+                return users;
+        }
+
+        public void setUsers(List<User> users) {
+                this.users = users;
+        }
+
+        public void addUsers(User user) {
+                if (user == null)
+                        throw new RuntimeException("Null user can't receive an achievement.");
+
+                if (this.users.contains(user))
+                        throw new RuntimeException("User already has this badge");
+
+                this.users.add(user);
+        }
+
         @Override
         public String toString() {
                 return "Badge: \n" +
-                                "id: " + this.id + "\n" +
-                                "name: " + this.name + "\n" +
-                                "requirements: " + this.requirements;
+                                "\tid: " + this.id + "\n" +
+                                "\tname: " + this.name + "\n" +
+                                "\trequirements: " + this.requirements;
         }
 }

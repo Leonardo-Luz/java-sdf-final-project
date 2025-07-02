@@ -31,11 +31,11 @@ public class Review {
         @Column(name = "read_end_date", nullable = true)
         private LocalDate readEndDate;
 
-        @ManyToOne(cascade = CascadeType.REMOVE)
+        @ManyToOne
         @JoinColumn(name = "book_id")
         private Book book;
 
-        @ManyToOne(cascade = CascadeType.REMOVE)
+        @ManyToOne
         @JoinColumn(name = "user_id")
         private User user;
 
@@ -156,10 +156,23 @@ public class Review {
                 likes.add(user);
         }
 
-        @Override
-        public String toString() {
+        public long readTime() {
+                if (this.readEndDate == null)
+                        throw new RuntimeException("Error: Read end date can't be null");
+
+                if (this.readStartDate == null)
+                        throw new RuntimeException("Error: Read start date can't be null");
+
                 long time = this.readEndDate.toEpochDay() - this.readStartDate.toEpochDay();
 
+                if (time < 0)
+                        throw new RuntimeException("Error: Read time can't be lower than ZERO");
+
+                return time;
+        }
+
+        @Override
+        public String toString() {
                 return "Review: \n" +
                                 "\tid: " + this.id + "\n" +
                                 "\tuser: " + this.user.getName() + "\n" +
@@ -167,6 +180,6 @@ public class Review {
                                 "\ttitle: " + this.title + "\n" +
                                 "\ttext: " + this.text + "\n" +
                                 "\tlikes: " + this.likes.size() + "\n" +
-                                "\tRead Time: " + time + " day(s)";
+                                "\tRead Time: " + readTime() + " day(s)";
         }
 }
